@@ -1,4 +1,7 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+
 <div id="container">
+
   <div id="terminal">
 
     <!-- Terminal Bar -->
@@ -13,7 +16,7 @@
 
     <!-- Terminal Body -->
     <section id="terminal__body" #scrollMe [scrollTop]="scrollMe.scrollHeight">
-      <div id="terminal__prompt">
+      <div *ngIf="!fullScreen" id="terminal__prompt">
 
         <div *ngFor="let line of lines">
           <div *ngIf="line.location != null">
@@ -27,7 +30,11 @@
 
         <span class="terminal__prompt--location">[{{ location }}] ></span>
         <!--suppress AngularUndefinedBinding -->
-        <input type="text" class="console-input" [(ngModel)]="input" placeholder="Type command..." (keydown.enter)="parseCommand()">
+        <input type="text" class="console-input" [(ngModel)]="input" placeholder="Type command..."
+               (keydown.enter)="parseCommand()" [autofocus]>
+      </div>
+      <div *ngIf="fullScreen">
+        <span class="terminal__prompt--response">{{ fullScreenText }}</span>
       </div>
     </section>
   </div>
