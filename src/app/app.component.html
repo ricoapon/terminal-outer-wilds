@@ -15,14 +15,19 @@
     <section id="terminal__body">
       <div id="terminal__prompt">
 
-        <div *ngFor="let command of commands">
-          <span class="terminal__prompt--location">[{{command.location}}] ></span>
-          <span class="terminal__prompt--command">{{command.command}}</span>
+        <div *ngFor="let line of lines">
+          <div *ngIf="line.location != null">
+            <span class="terminal__prompt--location">[{{line.location}}] ></span>
+            <span class="terminal__prompt--command">{{line.command}}</span>
+          </div>
+          <div *ngIf="line.response != null">
+            <span class="terminal__prompt--command">{{line.response}}</span>
+          </div>
         </div>
 
-        <span class="terminal__prompt--location">[fobabs@ubuntu] ></span>
+        <span class="terminal__prompt--location">[{{ location }}] ></span>
         <!--suppress AngularUndefinedBinding -->
-        <input type="text" class="console-input" [(ngModel)]="input" placeholder="Type command..." (keydown.enter)="addCommand()">
+        <input type="text" class="console-input" [(ngModel)]="input" placeholder="Type command..." (keydown.enter)="parseCommand()">
       </div>
     </section>
   </div>
