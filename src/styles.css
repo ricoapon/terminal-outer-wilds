@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  /* The normal linux background: linear-gradient(45deg, #57003f 0%,#f57453 100%); */
+  background: linear-gradient(135deg, #0f55e4, #0a3a9c);
+  font-family: Ubuntu;
+  font-size: 14px;
+}
