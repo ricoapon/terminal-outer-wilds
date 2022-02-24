@@ -62,6 +62,7 @@
   height: calc(100% - 30px);
   padding-top: 2px;
   margin-top: -1px;
+  overflow-y: scroll;
 }
 
 .terminal__prompt--location {
@@ -70,6 +71,10 @@
 }
 .terminal__prompt--command {
   color: white;
+}
+.terminal__prompt--response {
+  color: white;
+  white-space: pre-wrap;
 }
 
 @media (max-width: 600px) {

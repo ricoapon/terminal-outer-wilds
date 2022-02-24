@@ -12,7 +12,7 @@
     </section>
 
     <!-- Terminal Body -->
-    <section id="terminal__body">
+    <section id="terminal__body" #scrollMe [scrollTop]="scrollMe.scrollHeight">
       <div id="terminal__prompt">
 
         <div *ngFor="let line of lines">
@@ -21,7 +21,7 @@
             <span class="terminal__prompt--command">{{line.command}}</span>
           </div>
           <div *ngIf="line.response != null">
-            <span class="terminal__prompt--command">{{line.response}}</span>
+            <span class="terminal__prompt--response">{{line.response}}</span>
           </div>
         </div>
 
