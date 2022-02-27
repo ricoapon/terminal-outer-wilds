@@ -51,7 +51,7 @@ export class InMemoryFileSystem {
       return true;
     }
 
-    // The path cannot be found directory, so there are two possibilities: there are symbolic links involved or the path doesn't exist.
+    // The path cannot be found as a directory (because we use '..' or symbolic links for example.
     // Start from the beginning and traverse each directory.
     const startingDirectory = path.isAbsolute() ? new Path('/') : this.currentAbsolutePath;
     const directoriesToTraverse = path.directoriesToTraverse();
@@ -59,6 +59,11 @@ export class InMemoryFileSystem {
     for (const directory of directoriesToTraverse) {
       if (!this.fileSystem.has(traversedAbsolutePath.toString())) {
         return false;
+      }
+
+      if (directory === '..') {
+        traversedAbsolutePath = traversedAbsolutePath.getDirectoryAboveThisDirectory();
+        continue;
       }
 
       const fileSystemNodes = this.fileSystem.get(traversedAbsolutePath.toString()).fileSystemNodes;

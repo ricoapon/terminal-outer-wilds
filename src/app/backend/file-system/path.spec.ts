@@ -28,4 +28,12 @@ describe('Path', () => {
     expect(new Path('/absolute/path/somewhere').directoriesToTraverse()).toEqual(['absolute', 'path', 'somewhere']);
     expect(new Path('relative/path/somewhere').directoriesToTraverse()).toEqual(['relative', 'path', 'somewhere']);
   });
+
+  it('getDirectoryAboveThisDirectory() works', () => {
+    expect(new Path('/absolute/path/somewhere').getDirectoryAboveThisDirectory().toString()).toEqual('/absolute/path');
+    expect(new Path('/').getDirectoryAboveThisDirectory().toString()).toEqual('/');
+    expect(new Path('/directory').getDirectoryAboveThisDirectory().toString()).toEqual('/');
+    expect(new Path('relative/path/somewhere').getDirectoryAboveThisDirectory().toString()).toEqual('relative/path');
+    expect(() => new Path('relative').getDirectoryAboveThisDirectory().toString()).toThrowError();
+  });
 });

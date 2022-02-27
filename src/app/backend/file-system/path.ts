@@ -28,6 +28,24 @@ export class Path {
     return this.isAbsolute() ? this.pathAsString.substr(1).split('/') : this.pathAsString.split('/');
   }
 
+  /** Returns the path to the directory above this one. If this is the root directory, it will return the same directory. */
+  public getDirectoryAboveThisDirectory(): Path {
+    if (this.pathAsString === '/') {
+      return this;
+    }
+
+    if (!this.isAbsolute() && this.pathAsString.indexOf('/') < 0) {
+      throw new Error('Cannot go up anymore in relative directory ' + this.pathAsString);
+    }
+
+    // If the path is something like '/bla', we have to make sure that we return '/' instead of nothing.
+    if (this.isAbsolute() && this.pathAsString.indexOf('/', 1) < 0) {
+      return new Path('/');
+    }
+
+    return new Path(this.pathAsString.substr(0, this.pathAsString.lastIndexOf('/')));
+  }
+
   public name(): string {
     if (this.pathAsString === '/') {
       return '/';
