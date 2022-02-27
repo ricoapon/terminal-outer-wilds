@@ -14,6 +14,7 @@ export class Root implements FileSystemInitializer {
       new Directory('puzzle-1'),
       new Directory('puzzle-2'),
       new Directory('kingdom-far-far-away'),
+      new Directory('terminal-town'),
     ]));
 
     return map;
