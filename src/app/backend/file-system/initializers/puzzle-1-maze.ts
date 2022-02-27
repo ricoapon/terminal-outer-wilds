@@ -38,7 +38,7 @@ export class Puzzle1Maze implements FileSystemInitializer {
       new SymbolicLinkToDirectory('dir4', startingDirectory),
     ]));
     map.set(STARTING_DIR + 'dir2/dir4/dir4/dir1', createPropertiesAndFileSystemNodes([
-      new File('You_found_the_exit.txt')
+      new File('You_found_the_exit.txt', 'Empty')
     ]));
 
     return map;

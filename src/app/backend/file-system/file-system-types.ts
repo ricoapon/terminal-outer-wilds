@@ -7,13 +7,19 @@ export interface FileSystemNode {
 
 export class File implements FileSystemNode {
   private readonly _name: string;
+  private readonly _content: string;
 
-  constructor(name: string) {
+  constructor(name: string, content: string) {
     this._name = name;
+    this._content = content;
   }
 
   name(): string {
     return this._name;
+  }
+
+  content(): string {
+    return this._content;
   }
 
   isDirectory(): boolean {

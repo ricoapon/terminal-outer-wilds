@@ -12,10 +12,10 @@ export class Puzzle2InvisibleDir implements FileSystemInitializer {
 
     const map = new Map();
     map.set('/puzzle-2', createPropertiesAndFileSystemNodesWithColor('green', [
-      new File('Where_is_the_directory.txt')
+      new File('Where_is_the_directory.txt', 'Empty')
     ]));
     map.set(STARTING_DIR + 'invisible/dir', createPropertiesAndFileSystemNodes([
-      new File('You_found_it.txt')
+      new File('You_found_it.txt', 'Empty')
     ]));
 
     return map;
