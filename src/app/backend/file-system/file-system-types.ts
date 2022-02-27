@@ -1,6 +1,6 @@
 import {Path} from './path';
 import {CommandResponse} from '../types/command-types';
-import {ParsedArgs} from '../command-line-argument-parser';
+import {ParsedArgs} from '../util/command-line-argument-parser';
 
 export interface FileSystemNode {
   name(): string;

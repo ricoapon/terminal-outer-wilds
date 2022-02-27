@@ -1,6 +1,6 @@
 import {AssetReader} from '../asset-reader';
 import {CommandResponse} from '../types/command-types';
-import {ParsedArgs} from '../command-line-argument-parser';
+import {ParsedArgs} from '../util/command-line-argument-parser';
 import {Injectable} from '@angular/core';
 import {CommandParser} from './command-parser';
 

@@ -1,7 +1,7 @@
 import {CommandResponse, InputCommand} from './types/command-types';
 import {InMemoryFileSystem} from './file-system/in-memory-file-system';
 import {HttpClient} from '@angular/common/http';
-import {parseCommandLineArguments} from './command-line-argument-parser';
+import {parseCommandLineArguments} from './util/command-line-argument-parser';
 import {Inject, Injectable} from '@angular/core';
 import {COMMAND_PARSERS} from './commands/command-parser.module';
 import {CommandParser} from './commands/command-parser';

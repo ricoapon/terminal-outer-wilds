@@ -1,4 +1,4 @@
-import {ParsedArgs} from '../command-line-argument-parser';
+import {ParsedArgs} from '../util/command-line-argument-parser';
 import {CommandResponse} from '../types/command-types';
 
 export interface CommandParser {
