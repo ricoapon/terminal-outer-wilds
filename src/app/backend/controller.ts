@@ -26,6 +26,7 @@ export class Controller implements CommandParser {
   private readonly changeDirectory: ChangeDirectory;
   private readonly presentWorkingDirectory: PresentWorkingDirectory;
   private readonly read: Read;
+  private readonly help: Help;
 
   constructor(private httpClient: HttpClient) {
     const assetReader = new AssetReader(httpClient);
@@ -36,6 +37,7 @@ export class Controller implements CommandParser {
     this.changeDirectory = new ChangeDirectory(this.fileSystem);
     this.presentWorkingDirectory = new PresentWorkingDirectory(this.fileSystem);
     this.read = new Read(this.fileSystem);
+    this.help = new Help(assetReader);
   }
 
   public parseCommand(inputCommand: InputCommand): CommandResponse {
@@ -51,7 +53,7 @@ export class Controller implements CommandParser {
     } else if (programCommand === 'read') {
       return this.read.parseCommand(inputCommand);
     } else if (programCommand === 'help') {
-      return new Help().parseCommand(inputCommand);
+      return this.help.parseCommand(inputCommand);
     }
     return {response: 'Unknown command'};
   }
