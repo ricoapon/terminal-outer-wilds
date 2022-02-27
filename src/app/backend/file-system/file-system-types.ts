@@ -5,7 +5,7 @@ export interface FileSystemNode {
   isDirectory(): boolean;
 }
 
-export class File implements FileSystemNode {
+export class InMemoryFile implements FileSystemNode {
   private readonly _name: string;
   private readonly _content: string;
 
