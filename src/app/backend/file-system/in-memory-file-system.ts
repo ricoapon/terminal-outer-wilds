@@ -1,4 +1,4 @@
-import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, SymbolicLinkToDirectory} from './file-system-types';
+import {Directory, DirectoryProperties, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
 import {Path} from './path';
 import {FileSystemInitializer} from './initializers/file-system-initializer';
 
@@ -43,26 +43,23 @@ export class InMemoryFileSystem {
     return true;
   }
 
-  public getFile(pathAsString: string): InMemoryFile {
+  public getNode(pathAsString: string): FileSystemNode {
     // If there is no slash in the path, it is very easy: read the file in the current directory.
     if (pathAsString.indexOf('/') < 0) {
-      // tslint:disable-next-line:no-shadowed-variable
-      const node = InMemoryFileSystem.determineNodeWithName(pathAsString, this.listCurrentDirectoryNodes());
-      return node instanceof InMemoryFile ? node : undefined;
+      return InMemoryFileSystem.determineNodeWithName(pathAsString, this.listCurrentDirectoryNodes());
     }
 
-    // There are slashes involved. So we have to find the new directory and read that file.
+    // There are slashes involved. Use the content of the parent directory to find the node.
     const pathToDirOfFile = new Path(pathAsString).getPathToParentDirectory();
     const result = this.determineChangeDirectoryNewPath(this.currentPath, this.currentAbsolutePath, pathToDirOfFile);
     if (result === undefined) {
       return undefined;
     }
 
-    // The directory is found, see if we can find the file.
+    // The directory is found, see if we can find the node.
     const fileName = new Path(pathAsString).name();
-    const node = InMemoryFileSystem.determineNodeWithName(fileName,
+    return InMemoryFileSystem.determineNodeWithName(fileName,
       this.fileSystem.get(result.currentAbsolutePath.toString()).fileSystemNodes);
-    return node instanceof InMemoryFile ? node : undefined;
   }
 
   /**
