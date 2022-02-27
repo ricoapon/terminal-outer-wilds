@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {createPropertiesAndFileSystemNodes, FileSystemInitializer} from '../file-system-initializer';
 import {PropertiesAndFileSystemNodes} from '../../properties-and-file-system-nodes';
-import {Directory, InMemoryFile, SymbolicLinkToDirectory} from '../../file-system-types';
+import {Directory, ProgramFile, SymbolicLinkToDirectory} from '../../file-system-types';
 import {Path} from '../../path';
+import {ShortcutNpc} from './shortcut-npc';
 
 @Injectable()
 export class KingdomFarFarAway implements FileSystemInitializer {
@@ -29,7 +30,7 @@ export class KingdomFarFarAway implements FileSystemInitializer {
 
     // Add the shortcut.
     map.set(STARTING_DIR + '/shortcut/city', createPropertiesAndFileSystemNodes([
-      new InMemoryFile('you-made-it.txt', 'tutorial/step-3.txt'),
+      new ProgramFile('vvv', new ShortcutNpc()),
     ]));
 
     return map;
