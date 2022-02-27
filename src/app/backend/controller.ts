@@ -4,6 +4,7 @@ import {DummyFiles} from './file-system/initializers/dummy-files';
 import {ListDirectories} from './commands/list-directories';
 import {ChangeDirectory} from './commands/change-directory';
 import {PresentWorkingDirectory} from './commands/present-working-directory';
+import {Root} from './file-system/initializers/root';
 
 export interface CommandParser {
   parseCommand(inputCommand: InputCommand): CommandResponse;
@@ -19,7 +20,7 @@ export class Controller implements CommandParser {
   private readonly presentWorkingDirectory: PresentWorkingDirectory;
 
   constructor() {
-    this.fileSystem = new InMemoryFileSystem([new DummyFiles()]);
+    this.fileSystem = new InMemoryFileSystem([new Root(), new DummyFiles()]);
     this.listDirectories = new ListDirectories(this.fileSystem);
     this.changeDirectory = new ChangeDirectory(this.fileSystem);
     this.presentWorkingDirectory = new PresentWorkingDirectory(this.fileSystem);
