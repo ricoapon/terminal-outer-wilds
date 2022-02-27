@@ -16,7 +16,18 @@ export type Line = {
 })
 export class AppComponent implements AfterViewInit {
   private readonly controller: Controller = new Controller();
-  readonly lines: Line[] = [];
+  readonly lines: Line[] = [{
+    response:
+      '   ____    _    _   _______   ______   _____     __          __  _____   _        _____     _____ \n' +
+      '  / __ \\  | |  | | |__   __| |  ____| |  __ \\    \\ \\        / / |_   _| | |      |  __ \\   / ____|\n' +
+      ' | |  | | | |  | |    | |    | |__    | |__) |    \\ \\  /\\  / /    | |   | |      | |  | | | (___  \n' +
+      ' | |  | | | |  | |    | |    |  __|   |  _  /      \\ \\/  \\/ /     | |   | |      | |  | |  \\___ \\ \n' +
+      ' | |__| | | |__| |    | |    | |____  | | \\ \\       \\  /\\  /     _| |_  | |____  | |__| |  ____) |\n' +
+      '  \\____/   \\____/     |_|    |______| |_|  \\_\\       \\/  \\/     |_____| |______| |_____/  |_____/ \n' +
+      '                                                                                                  \n' +
+      'Welcome to this magical server. Take a look around and enjoy yourself with the puzzles.\n' +
+      'If this is your first time playing, type \'help\' and press enter.\n\n',
+  }];
   location = '/';
   backgroundColor = 'blue';
   input: string;
