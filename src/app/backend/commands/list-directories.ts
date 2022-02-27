@@ -11,6 +11,11 @@ export class ListDirectories implements CommandParser {
 
   public parseCommand(command: InputCommand): CommandResponse {
     const fileSystemNodes = this.fileSystem.listCurrentDirectoryNodes();
+
+    if (fileSystemNodes.size === 0) {
+      return {response: 'This directory is empty'};
+    }
+
     // Sort such that directories go first, then files. Then sort alphabetically.
     const sortedFileSystemNodes = Array.of(...fileSystemNodes).sort((a, b) => {
       if (a.isDirectory() && !b.isDirectory()) {
