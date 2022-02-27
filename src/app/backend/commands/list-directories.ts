@@ -1,6 +1,7 @@
 import {CommandResponse, InputCommand} from '../types/command-types';
 import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
+import {Directory, ProgramFile} from '../file-system/file-system-types';
 
 export class ListDirectories implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
@@ -33,7 +34,15 @@ export class ListDirectories implements CommandParser {
 
     let output = '';
     for (const fileSystemNode of sortedFileSystemNodes) {
-      output += (fileSystemNode.isDirectory() ? 'd' : 'f');
+      if (fileSystemNode instanceof Directory) {
+        output += 'd';
+      } else if (fileSystemNode instanceof InMemoryFileSystem) {
+        output += 'f';
+      } else if (fileSystemNode instanceof ProgramFile) {
+        output += 'p';
+      } else {
+        output += '?';
+      }
       output += ' ' + fileSystemNode.name() + '\n';
     }
 
