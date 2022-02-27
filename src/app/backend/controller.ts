@@ -13,6 +13,7 @@ import {Tutorial} from './file-system/initializers/tutorial';
 import {HttpClient} from '@angular/common/http';
 import {AssetReader} from './asset-reader';
 import {Manual} from './commands/manual';
+import {Execute} from './commands/execute';
 
 export interface CommandParser {
   parseCommand(inputCommand: InputCommand): CommandResponse;
@@ -29,6 +30,7 @@ export class Controller implements CommandParser {
   private readonly read: Read;
   private readonly help: Help;
   private readonly manual: Manual;
+  private readonly execute: Execute;
 
   constructor(private httpClient: HttpClient) {
     const assetReader = new AssetReader(httpClient);
@@ -41,6 +43,7 @@ export class Controller implements CommandParser {
     this.read = new Read(this.fileSystem, assetReader);
     this.help = new Help(assetReader);
     this.manual = new Manual(assetReader);
+    this.execute = new Execute(this.fileSystem);
   }
 
   public parseCommand(inputCommand: InputCommand): CommandResponse {
@@ -59,6 +62,9 @@ export class Controller implements CommandParser {
       return this.manual.parseCommand(inputCommand);
     } else if (programCommand === 'help') {
       return this.help.parseCommand(inputCommand);
+    } else if (programCommand === 'execute') {
+      return this.execute.parseCommand(inputCommand);
+
     }
     return {response: 'Unknown command'};
   }
