@@ -16,7 +16,7 @@ export class KingdomFarFarAway implements FileSystemInitializer {
     ]));
 
     // The user needs to execute the command `cd far` depth+1 times.
-    const depth = 4;
+    const depth = 10;
     let path = '/far';
     for (let i = 0; i < depth; i++) {
       map.set(STARTING_DIR + path, createPropertiesAndFileSystemNodes([
@@ -28,7 +28,6 @@ export class KingdomFarFarAway implements FileSystemInitializer {
       new SymbolicLinkToDirectory('city', new Path(STARTING_DIR + '/shortcut/city'))
     ]));
 
-    // Add the shortcut.
     map.set(STARTING_DIR + '/shortcut/city', createPropertiesAndFileSystemNodes([
       new ProgramFile('vvv', new ShortcutNpc()),
     ]));
