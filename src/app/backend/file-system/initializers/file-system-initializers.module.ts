@@ -2,7 +2,7 @@ import {InjectionToken, NgModule} from '@angular/core';
 import {FileSystemInitializer} from './file-system-initializer';
 import {DummyFiles} from './dummy-files';
 import {Root} from './root';
-import {Tutorial} from './tutorial';
+import {Tutorial} from './tutorial/tutorial';
 import {KingdomFarFarAway} from './kingdom-far-far-away/kingdom-far-far-away';
 import {TerminalTown} from './terminal-town/terminal-town';
 

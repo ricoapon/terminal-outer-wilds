@@ -1,7 +1,6 @@
-import {Directory, ProgramFile, SymbolicLinkToDirectory} from '../file-system-types';
+import {Directory, SymbolicLinkToDirectory} from '../file-system-types';
 import {Path} from '../path';
 import {createPropertiesAndFileSystemNodes, FileSystemInitializer} from './file-system-initializer';
-import {TutorialNpc} from '../../programs/tutorial-npc';
 import {Injectable} from '@angular/core';
 import {PropertiesAndFileSystemNodes} from '../properties-and-file-system-nodes';
 
@@ -13,7 +12,6 @@ export class DummyFiles implements FileSystemInitializer {
     const map = new Map();
     map.set('/dummy-files', createPropertiesAndFileSystemNodes([
       new Directory('dir1'), new Directory('dir2'),
-      new ProgramFile('npc.sh', new TutorialNpc())
     ]));
 
     map.set(STARTING_DIR + 'dir2', createPropertiesAndFileSystemNodes([]));
