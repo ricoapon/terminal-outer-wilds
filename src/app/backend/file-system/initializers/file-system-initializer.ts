@@ -1,5 +1,5 @@
-import {PropertiesAndFileSystemNodes} from '../in-memory-file-system';
 import {DirectoryProperties, FileSystemNode} from '../file-system-types';
+import {PropertiesAndFileSystemNodes} from '../properties-and-file-system-nodes';
 
 export function createPropertiesAndFileSystemNodes(values: FileSystemNode[]): PropertiesAndFileSystemNodes {
   return new PropertiesAndFileSystemNodes(new DirectoryProperties(), new Set<FileSystemNode>(values));

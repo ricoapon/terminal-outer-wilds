@@ -2,7 +2,9 @@ import {CommandParser} from '../controller';
 import {AssetReader} from '../asset-reader';
 import {CommandResponse} from '../types/command-types';
 import {ParsedArgs} from '../command-line-argument-parser';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class Manual implements CommandParser {
   private readonly assetReader: AssetReader;
 

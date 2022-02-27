@@ -3,7 +3,9 @@ import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
 import {Directory, ProgramFile} from '../file-system/file-system-types';
 import {ParsedArgs} from '../command-line-argument-parser';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class ListDirectories implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
 
@@ -35,6 +37,7 @@ export class ListDirectories implements CommandParser {
 
     let output = '';
     for (const fileSystemNode of sortedFileSystemNodes) {
+      console.log(fileSystemNode);
       if (fileSystemNode instanceof Directory) {
         output += 'd';
       } else if (fileSystemNode instanceof InMemoryFileSystem) {

@@ -1,20 +1,17 @@
-import {InputCommand, CommandResponse} from './types/command-types';
+import {CommandResponse, InputCommand} from './types/command-types';
 import {InMemoryFileSystem} from './file-system/in-memory-file-system';
-import {DummyFiles} from './file-system/initializers/dummy-files';
 import {ListDirectories} from './commands/list-directories';
 import {ChangeDirectory} from './commands/change-directory';
 import {PresentWorkingDirectory} from './commands/present-working-directory';
-import {Root} from './file-system/initializers/root';
-import {Puzzle1Maze} from './file-system/initializers/puzzle-1-maze';
-import {Puzzle2InvisibleDir} from './file-system/initializers/puzzle2-invisible-dir';
 import {Read} from './commands/read';
 import {Help} from './commands/help';
-import {Tutorial} from './file-system/initializers/tutorial';
 import {HttpClient} from '@angular/common/http';
 import {AssetReader} from './asset-reader';
 import {Manual} from './commands/manual';
 import {Execute} from './commands/execute';
 import {parseCommandLineArguments, ParsedArgs} from './command-line-argument-parser';
+import {Inject, Injectable} from '@angular/core';
+import {COMMAND_PARSERS} from './commands/commands.module';
 
 export interface CommandParser {
   parseCommand(parsedArgs: ParsedArgs): CommandResponse;
@@ -23,8 +20,8 @@ export interface CommandParser {
 /**
  * This class is the entry point for the entire backend. Commands are inserted here.
  */
+@Injectable({providedIn: 'root'})
 export class Controller {
-  private readonly fileSystem: InMemoryFileSystem;
   private readonly listDirectories: ListDirectories;
   private readonly changeDirectory: ChangeDirectory;
   private readonly presentWorkingDirectory: PresentWorkingDirectory;
@@ -33,9 +30,11 @@ export class Controller {
   private readonly manual: Manual;
   private readonly execute: Execute;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              @Inject(COMMAND_PARSERS) private commands: CommandParser[],
+              private fileSystem: InMemoryFileSystem) {
     const assetReader = new AssetReader(httpClient);
-    this.fileSystem = new InMemoryFileSystem([new Root(), new DummyFiles(), new Puzzle1Maze(), new Puzzle2InvisibleDir(), new Tutorial()]);
+    // this.fileSystem = new InMemoryFileSystem();
     // We want to start in the tutorial directory.
     this.fileSystem.changeDirectory('tutorial');
     this.listDirectories = new ListDirectories(this.fileSystem);

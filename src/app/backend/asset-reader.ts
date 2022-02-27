@@ -1,5 +1,7 @@
 import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 
+@Injectable({providedIn: 'root'})
 export class AssetReader {
   private readonly httpClient: HttpClient;
   private readonly downloadedAssets: Map<string, string>;

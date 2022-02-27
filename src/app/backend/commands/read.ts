@@ -4,7 +4,9 @@ import {CommandResponse} from '../types/command-types';
 import {AssetReader} from '../asset-reader';
 import {InMemoryFile} from '../file-system/file-system-types';
 import {ParsedArgs} from '../command-line-argument-parser';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class Read implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
   private readonly assetReader: AssetReader;

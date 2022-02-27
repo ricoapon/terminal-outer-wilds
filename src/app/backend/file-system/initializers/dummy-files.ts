@@ -1,9 +1,11 @@
-import {PropertiesAndFileSystemNodes} from '../in-memory-file-system';
 import {Directory, ProgramFile, SymbolicLinkToDirectory} from '../file-system-types';
 import {Path} from '../path';
 import {createPropertiesAndFileSystemNodes, FileSystemInitializer} from './file-system-initializer';
 import {TutorialNpc} from '../../programs/tutorial-npc';
+import {Injectable} from '@angular/core';
+import {PropertiesAndFileSystemNodes} from '../properties-and-file-system-nodes';
 
+@Injectable()
 export class DummyFiles implements FileSystemInitializer {
   load(): Map<string, PropertiesAndFileSystemNodes> {
     const STARTING_DIR = '/dummy-files/';

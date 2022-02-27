@@ -2,7 +2,9 @@ import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
 import {CommandResponse} from '../types/command-types';
 import {ParsedArgs} from '../command-line-argument-parser';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class ChangeDirectory implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
 

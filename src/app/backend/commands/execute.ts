@@ -3,7 +3,9 @@ import {CommandResponse} from '../types/command-types';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
 import {ProgramFile} from '../file-system/file-system-types';
 import {ParsedArgs} from '../command-line-argument-parser';
+import {Injectable} from '@angular/core';
 
+@Injectable()
 export class Execute implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
 

@@ -1,11 +1,13 @@
-import {PropertiesAndFileSystemNodes} from '../in-memory-file-system';
 import {InMemoryFile} from '../file-system-types';
 import {
   createPropertiesAndFileSystemNodes,
   createPropertiesAndFileSystemNodesWithColor,
   FileSystemInitializer
 } from './file-system-initializer';
+import {Injectable} from '@angular/core';
+import {PropertiesAndFileSystemNodes} from '../properties-and-file-system-nodes';
 
+@Injectable()
 export class Puzzle2InvisibleDir implements FileSystemInitializer {
   load(): Map<string, PropertiesAndFileSystemNodes> {
     const STARTING_DIR = '/puzzle-2/';
