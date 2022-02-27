@@ -14,7 +14,7 @@ export class Controller {
   private readonly commandParserMap: Map<string, CommandParser>;
 
   constructor(private httpClient: HttpClient,
-              @Inject(COMMAND_PARSERS) private commandParsers: CommandParser[],
+              @Inject(COMMAND_PARSERS) commandParsers: CommandParser[],
               private fileSystem: InMemoryFileSystem) {
     // We want to start in the tutorial directory.
     this.fileSystem.changeDirectory('tutorial');
