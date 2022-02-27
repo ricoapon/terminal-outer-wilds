@@ -36,6 +36,10 @@ describe('InMemoryFileSystem', () => {
     fileSystem = new InMemoryFileSystem([new FileSystemInitializerForTest()]);
   });
 
+  function changeDirectory(path: string): void {
+    expect(fileSystem.changeDirectory(path)).toEqual(true);
+  }
+
   it('change directories works for absolute paths without symbolic links', () => {
     // When
     const result = fileSystem.changeDirectory('/dir1/subdir1/subdir3');
@@ -54,30 +58,40 @@ describe('InMemoryFileSystem', () => {
 
   it('change directories works for relative paths without symbolic links', () => {
     // When and then
-    expect(fileSystem.changeDirectory('dir1')).toEqual(true);
-    expect(fileSystem.changeDirectory('subdir1')).toEqual(true);
-    expect(fileSystem.changeDirectory('subdir3')).toEqual(true);
+    changeDirectory('dir1');
+    changeDirectory('subdir1');
+    changeDirectory('subdir3');
     expect(fileSystem.getCurrentAbsolutePath()).toEqual('/dir1/subdir1/subdir3');
   });
 
   it('change directories works for absolute paths with symbolic links', () => {
-    expect(fileSystem.changeDirectory('/dir1/subdir1/subdir4/subdir1/subdir4')).toEqual(true);
+    changeDirectory('/dir1/subdir1/subdir4/subdir1/subdir4');
     expect(fileSystem.getCurrentPath()).toEqual('/dir1/subdir1/subdir4/subdir1/subdir4');
     expect(fileSystem.getCurrentAbsolutePath()).toEqual('/dir1');
   });
 
   it('change directories works for relative paths with symbolic links', () => {
     // When and then
-    expect(fileSystem.changeDirectory('dir1')).toEqual(true);
-    expect(fileSystem.changeDirectory('subdir1')).toEqual(true);
-    expect(fileSystem.changeDirectory('subdir4/subdir1/subdir4')).toEqual(true);
+    changeDirectory('dir1');
+    changeDirectory('subdir1');
+    changeDirectory('subdir4/subdir1/subdir4');
     expect(fileSystem.getCurrentPath()).toEqual('/dir1/subdir1/subdir4/subdir1/subdir4');
     expect(fileSystem.getCurrentAbsolutePath()).toEqual('/dir1');
   });
 
   it('currentDirectoryName() returns the name of the symbolic link directory', () => {
-    fileSystem.changeDirectory('dir1/subdir1/subdir4');
+    changeDirectory('dir1/subdir1/subdir4');
     expect(fileSystem.currentDirectoryName()).toEqual('subdir4');
   });
 
+  it('we can use \'..\' in the path when changing directories', () => {
+    changeDirectory('dir1/subdir1');
+    changeDirectory('..');
+    expect(fileSystem.getCurrentAbsolutePath()).toEqual('/dir1');
+    changeDirectory('/dir1/subdir1/../subdir1/..');
+    expect(fileSystem.getCurrentAbsolutePath()).toEqual('/dir1');
+    changeDirectory('/');
+    changeDirectory('..');
+    expect(fileSystem.getCurrentAbsolutePath()).toEqual('/');
+  });
 });
