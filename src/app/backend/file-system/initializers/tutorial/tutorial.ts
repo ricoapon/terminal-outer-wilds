@@ -1,7 +1,8 @@
-import {createPropertiesAndFileSystemNodes, FileSystemInitializer} from './file-system-initializer';
-import {Directory, InMemoryFile} from '../file-system-types';
+import {createPropertiesAndFileSystemNodes, FileSystemInitializer} from '../file-system-initializer';
+import {Directory, InMemoryFile, ProgramFile} from '../../file-system-types';
 import {Injectable} from '@angular/core';
-import {PropertiesAndFileSystemNodes} from '../properties-and-file-system-nodes';
+import {PropertiesAndFileSystemNodes} from '../../properties-and-file-system-nodes';
+import {TutorialNpc} from './tutorial-npc';
 
 @Injectable()
 export class Tutorial implements FileSystemInitializer {
@@ -15,6 +16,7 @@ export class Tutorial implements FileSystemInitializer {
     ]));
     map.set(STARTING_DIR + 'step-2', createPropertiesAndFileSystemNodes([
       new InMemoryFile('step-3.txt', 'tutorial/step-3.txt'),
+      new ProgramFile('npc.sh', new TutorialNpc())
     ]));
 
     return map;

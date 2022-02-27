@@ -11,9 +11,8 @@ export class Root implements FileSystemInitializer {
     map.set('/', createPropertiesAndFileSystemNodesWithColor('blue', [
       new Directory('dummy-files'),
       new Directory('tutorial'),
-      new Directory('puzzle-1'),
-      new Directory('puzzle-2'),
       new Directory('kingdom-far-far-away'),
+      new Directory('terminal-town'),
     ]));
 
     return map;
