@@ -28,8 +28,8 @@ export class Path {
     return this.isAbsolute() ? this.pathAsString.substr(1).split('/') : this.pathAsString.split('/');
   }
 
-  /** Returns the path to the directory above this one. If this is the root directory, it will return the same directory. */
-  public getDirectoryAboveThisDirectory(): Path {
+  /** Returns the path to the parent directory. If this is the root directory, it will return the same directory. */
+  public getPathToParentDirectory(): Path {
     if (this.pathAsString === '/') {
       return this;
     }
