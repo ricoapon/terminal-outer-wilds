@@ -6,4 +6,5 @@ export type InputCommand = {
 export type CommandResponse = {
   response: string,
   fullScreen?: boolean,
+  newCurrentDirectory?: string,
 };

@@ -19,6 +19,6 @@ export class ChangeDirectory implements CommandParser {
 
     console.log(this.fileSystem.getCurrentAbsolutePath() + '\n' + this.fileSystem.getCurrentPath());
 
-    return {response: ''};
+    return {response: '', newCurrentDirectory: this.fileSystem.currentDirectoryName()};
   }
 }
