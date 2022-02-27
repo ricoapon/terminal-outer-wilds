@@ -13,6 +13,7 @@ export class Root implements FileSystemInitializer {
       new Directory('tutorial'),
       new Directory('puzzle-1'),
       new Directory('puzzle-2'),
+      new Directory('kingdom-far-far-away'),
     ]));
 
     return map;

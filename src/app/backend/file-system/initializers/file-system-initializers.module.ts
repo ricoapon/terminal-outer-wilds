@@ -5,6 +5,7 @@ import {Puzzle2InvisibleDir} from './puzzle2-invisible-dir';
 import {Puzzle1Maze} from './puzzle-1-maze';
 import {Root} from './root';
 import {Tutorial} from './tutorial';
+import {KingdomFarFarAway} from './kingdom-far-far-away/kingdom-far-far-away';
 
 export const FILE_SYSTEM_INITIALIZERS = new InjectionToken<FileSystemInitializer>('FileSystemInitializer');
 
@@ -17,6 +18,7 @@ export const FILE_SYSTEM_INITIALIZERS = new InjectionToken<FileSystemInitializer
     {provide: FILE_SYSTEM_INITIALIZERS, useClass: Puzzle1Maze, multi: true},
     {provide: FILE_SYSTEM_INITIALIZERS, useClass: Root, multi: true},
     {provide: FILE_SYSTEM_INITIALIZERS, useClass: Tutorial, multi: true},
+    {provide: FILE_SYSTEM_INITIALIZERS, useClass: KingdomFarFarAway, multi: true},
   ],
   bootstrap: []
 })
