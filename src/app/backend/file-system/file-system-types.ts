@@ -1,4 +1,5 @@
 import {Path} from './path';
+import {CommandResponse} from '../types/command-types';
 
 export interface FileSystemNode {
   name(): string;
@@ -77,4 +78,30 @@ export class DirectoryProperties {
   color(): string {
     return this._color;
   }
+}
+
+export class ProgramFile implements FileSystemNode {
+  private readonly _name: string;
+  private readonly _program: Program;
+
+  constructor(name: string, program: Program) {
+    this._name = name;
+    this._program = program;
+  }
+
+  name(): string {
+    return this._name;
+  }
+
+  isDirectory(): boolean {
+    return false;
+  }
+
+  program(): Program {
+    return this._program;
+  }
+}
+
+export interface Program {
+  execute(command: string): CommandResponse;
 }
