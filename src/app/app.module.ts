@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
@@ -8,6 +8,7 @@ import {AutofocusDirective} from './autofocus.directive';
 import {HttpClientModule} from '@angular/common/http';
 import {CommandParserModule} from './backend/commands/command-parser.module';
 import {FileSystemInitializersModule} from './backend/file-system/initializers/file-system-initializers.module';
+import {AssetReader} from './backend/asset-reader';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,16 @@ import {FileSystemInitializersModule} from './backend/file-system/initializers/f
     CommandParserModule,
     FileSystemInitializersModule
   ],
-  providers: [],
+  providers: [
+    {provide: APP_INITIALIZER, useFactory: initializeAssetReader, deps: [AssetReader], multi: true}
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
+
+export function initializeAssetReader(assetReader: AssetReader): () => Promise<any> {
+  return (): Promise<void> => {
+    return assetReader.initialize();
+  };
+}
