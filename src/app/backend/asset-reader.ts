@@ -3,7 +3,10 @@ import {HttpClient} from '@angular/common/http';
 export class AssetReader {
   private readonly httpClient: HttpClient;
   private readonly downloadedAssets: Map<string, string>;
-  private readonly assetsToDownload: string[] = ['help/help.txt'];
+  private readonly assetsToDownload: string[] = ['help/help.txt',
+    'tutorial/step-1.txt', 'tutorial/step-3.txt',
+    'puzzle-2/README.txt', 'puzzle-2/You_found_it.txt',
+  ];
   private finishedDownloading = false;
 
   constructor(httpClient: HttpClient) {

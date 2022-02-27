@@ -36,7 +36,7 @@ export class Controller implements CommandParser {
     this.listDirectories = new ListDirectories(this.fileSystem);
     this.changeDirectory = new ChangeDirectory(this.fileSystem);
     this.presentWorkingDirectory = new PresentWorkingDirectory(this.fileSystem);
-    this.read = new Read(this.fileSystem);
+    this.read = new Read(this.fileSystem, assetReader);
     this.help = new Help(assetReader);
   }
 

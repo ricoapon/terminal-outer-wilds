@@ -1,0 +1,16 @@
+   ____    _    _   _______   ______   _____     __          __  _____   _        _____     _____
+  / __ \  | |  | | |__   __| |  ____| |  __ \    \ \        / / |_   _| | |      |  __ \   / ____|
+ | |  | | | |  | |    | |    | |__    | |__) |    \ \  /\  / /    | |   | |      | |  | | | (___
+ | |  | | | |  | |    | |    |  __|   |  _  /      \ \/  \/ /     | |   | |      | |  | |  \___ \
+ | |__| | | |__| |    | |    | |____  | | \ \       \  /\  /     _| |_  | |____  | |__| |  ____) |
+  \____/   \____/     |_|    |______| |_|  \_\       \/  \/     |_____| |______| |_____/  |_____/
+
+Woop woop, changing directories is a piece of cake!
+
+The `cd` command you just learned can do a lot more. The tutorial won't cover all the specifics, but
+as you might guess: there are commands to learn more about commands! The command is called `man`,
+which is short for "manual". You can use the command `man cd` to learn more about cd! It contains
+useful examples. All the technical details that developers might want are there.
+
+If you checked out the manual you are ready to start exploring. You can start the game by typing
+the command `cd /`. Enjoy!

@@ -1,12 +1,15 @@
 import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
 import {CommandResponse, InputCommand} from '../types/command-types';
+import {AssetReader} from '../asset-reader';
 
 export class Read implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
+  private readonly assetReader: AssetReader;
 
-  constructor(fileSystem: InMemoryFileSystem) {
+  constructor(fileSystem: InMemoryFileSystem, assetReader: AssetReader) {
     this.fileSystem = fileSystem;
+    this.assetReader = assetReader;
   }
 
   public parseCommand(command: InputCommand): CommandResponse {
@@ -17,6 +20,8 @@ export class Read implements CommandParser {
       return {response: 'File could not be found'};
     }
 
-    return {response: file.content(), fullScreen: true};
+    console.log(file);
+
+    return {response: this.assetReader.get(file.assetPath()), fullScreen: true};
   }
 }
