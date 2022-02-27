@@ -1,4 +1,4 @@
-import {Directory, DirectoryProperties, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
+import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, SymbolicLinkToDirectory} from './file-system-types';
 import {Path} from './path';
 import {FileSystemInitializer} from './initializers/file-system-initializer';
 
@@ -34,31 +34,60 @@ export class InMemoryFileSystem {
    * @param pathAsString The path to go to (either relative or absolute).
    */
   public changeDirectory(pathAsString: string): boolean {
-    const path = new Path(pathAsString);
+    const result = this.determineChangeDirectoryNewPath(this.currentPath, this.currentAbsolutePath, new Path(pathAsString));
+    if (result === undefined) {
+      return false;
+    }
+    this.currentPath = result.currentPath;
+    this.currentAbsolutePath = result.currentAbsolutePath;
+    return true;
+  }
 
+  public getFile(pathAsString: string): InMemoryFile {
+    // If there is no slash in the path, it is very easy: read the file in the current directory.
+    if (pathAsString.indexOf('/') < 0) {
+      // tslint:disable-next-line:no-shadowed-variable
+      const node = InMemoryFileSystem.determineNodeWithName(pathAsString, this.listCurrentDirectoryNodes());
+      return node instanceof InMemoryFile ? node : undefined;
+    }
+
+    // There are slashes involved. So we have to find the new directory and read that file.
+    const pathToDirOfFile = new Path(pathAsString).getDirectoryAboveThisDirectory();
+    const result = this.determineChangeDirectoryNewPath(this.currentPath, this.currentAbsolutePath, pathToDirOfFile);
+    if (result === undefined) {
+      return undefined;
+    }
+
+    // The directory is found, see if we can find the file.
+    const fileName = new Path(pathAsString).name();
+    const node = InMemoryFileSystem.determineNodeWithName(fileName,
+      this.fileSystem.get(result.currentAbsolutePath.toString()).fileSystemNodes);
+    return node instanceof InMemoryFile ? node : undefined;
+  }
+
+  /**
+   * Determines the new paths based on the given input. Returns undefined if the path is incorrect.
+   */
+  private determineChangeDirectoryNewPath(currentPath: Path, currentAbsolutePath: Path, newPath: Path): any {
     // Any absolute path we can directly go to, do so.
-    if (path.isAbsolute() && this.fileSystem.has(path.toString())) {
-      this.currentPath = path;
-      this.currentAbsolutePath = path;
-      return true;
+    if (newPath.isAbsolute() && this.fileSystem.has(newPath.toString())) {
+      return {currentPath: newPath, currentAbsolutePath: newPath};
     }
 
     // Any relative path that we can directly go to, do so.
-    if (!path.isAbsolute() && this.fileSystem.has(this.currentAbsolutePath.resolve(path).toString())) {
+    if (!newPath.isAbsolute() && this.fileSystem.has(currentAbsolutePath.resolve(newPath).toString())) {
       // In case our current path contains symlinks, we need to keep those.
-      this.currentPath = this.currentPath.resolve(path);
-      this.currentAbsolutePath = this.currentAbsolutePath.resolve(path);
-      return true;
+      return {currentPath: currentPath.resolve(newPath), currentAbsolutePath: currentAbsolutePath.resolve(newPath)};
     }
 
     // The path cannot be found as a directory (because we use '..' or symbolic links for example.
     // Start from the beginning and traverse each directory.
-    const startingDirectory = path.isAbsolute() ? new Path('/') : this.currentAbsolutePath;
-    const directoriesToTraverse = path.directoriesToTraverse();
+    const startingDirectory = newPath.isAbsolute() ? new Path('/') : currentAbsolutePath;
+    const directoriesToTraverse = newPath.directoriesToTraverse();
     let traversedAbsolutePath = startingDirectory;
     for (const directory of directoriesToTraverse) {
       if (!this.fileSystem.has(traversedAbsolutePath.toString())) {
-        return false;
+        return undefined;
       }
 
       if (directory === '..') {
@@ -70,7 +99,7 @@ export class InMemoryFileSystem {
       const fileSystemNode = InMemoryFileSystem.determineNodeWithName(directory, fileSystemNodes);
       if (fileSystemNode === undefined) {
         // One of the directories in the path does not exist, so the path is invalid.
-        return false;
+        return undefined;
       }
 
       // Something does exist. Depending on the type, we can do something.
@@ -80,14 +109,12 @@ export class InMemoryFileSystem {
         traversedAbsolutePath = traversedAbsolutePath.resolve(directory);
       } else {
         // We found something that is not a directory (probably a file). This is an incorrect path.
-        return false;
+        return undefined;
       }
     }
 
     // We traversed the entire path, and we didn't return false. So the path must be valid.
-    this.currentPath = path.isAbsolute() ? path : this.currentPath.resolve(path);
-    this.currentAbsolutePath = traversedAbsolutePath;
-    return true;
+    return {currentPath: newPath.isAbsolute() ? newPath : this.currentPath.resolve(newPath), currentAbsolutePath: traversedAbsolutePath};
   }
 
   public currentDirectoryName(): string {
