@@ -6,6 +6,7 @@ import {ChangeDirectory} from './commands/change-directory';
 import {PresentWorkingDirectory} from './commands/present-working-directory';
 import {Root} from './file-system/initializers/root';
 import {Puzzle1Maze} from './file-system/initializers/puzzle-1-maze';
+import {Puzzle2InvisibleDir} from './file-system/initializers/puzzle2-invisible-dir';
 
 export interface CommandParser {
   parseCommand(inputCommand: InputCommand): CommandResponse;
@@ -21,7 +22,7 @@ export class Controller implements CommandParser {
   private readonly presentWorkingDirectory: PresentWorkingDirectory;
 
   constructor() {
-    this.fileSystem = new InMemoryFileSystem([new Root(), new DummyFiles(), new Puzzle1Maze()]);
+    this.fileSystem = new InMemoryFileSystem([new Root(), new DummyFiles(), new Puzzle1Maze(), new Puzzle2InvisibleDir()]);
     this.listDirectories = new ListDirectories(this.fileSystem);
     this.changeDirectory = new ChangeDirectory(this.fileSystem);
     this.presentWorkingDirectory = new PresentWorkingDirectory(this.fileSystem);

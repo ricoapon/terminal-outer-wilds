@@ -9,6 +9,7 @@ export class Root implements FileSystemInitializer {
     map.set('/', createPropertiesAndFileSystemNodes([
       new Directory('dummy-files'),
       new Directory('puzzle-1'),
+      new Directory('puzzle-2'),
     ]));
 
     return map;
