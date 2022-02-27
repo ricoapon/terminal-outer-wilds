@@ -9,13 +9,10 @@ import {HttpClient} from '@angular/common/http';
 import {AssetReader} from './asset-reader';
 import {Manual} from './commands/manual';
 import {Execute} from './commands/execute';
-import {parseCommandLineArguments, ParsedArgs} from './command-line-argument-parser';
+import {parseCommandLineArguments} from './command-line-argument-parser';
 import {Inject, Injectable} from '@angular/core';
-import {COMMAND_PARSERS} from './commands/commands.module';
-
-export interface CommandParser {
-  parseCommand(parsedArgs: ParsedArgs): CommandResponse;
-}
+import {COMMAND_PARSERS} from './commands/command-parser.module';
+import {CommandParser} from './commands/command-parser';
 
 /**
  * This class is the entry point for the entire backend. Commands are inserted here.

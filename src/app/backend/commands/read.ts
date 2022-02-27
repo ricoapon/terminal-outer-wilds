@@ -1,10 +1,10 @@
-import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
 import {CommandResponse} from '../types/command-types';
 import {AssetReader} from '../asset-reader';
 import {InMemoryFile} from '../file-system/file-system-types';
 import {ParsedArgs} from '../command-line-argument-parser';
 import {Injectable} from '@angular/core';
+import {CommandParser} from './command-parser';
 
 @Injectable()
 export class Read implements CommandParser {
@@ -14,6 +14,10 @@ export class Read implements CommandParser {
   constructor(fileSystem: InMemoryFileSystem, assetReader: AssetReader) {
     this.fileSystem = fileSystem;
     this.assetReader = assetReader;
+  }
+
+  mainCommand(): string {
+    return 'read';
   }
 
   public parseCommand(parsedArgs: ParsedArgs): CommandResponse {

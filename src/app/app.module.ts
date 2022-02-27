@@ -6,7 +6,7 @@ import {FormsModule} from '@angular/forms';
 import {KeyboardShortcutsModule} from 'ng-keyboard-shortcuts';
 import {AutofocusDirective} from './autofocus.directive';
 import {HttpClientModule} from '@angular/common/http';
-import {CommandsModule} from './backend/commands/commands.module';
+import {CommandParserModule} from './backend/commands/command-parser.module';
 import {FileSystemInitializersModule} from './backend/file-system/initializers/file-system-initializers.module';
 
 @NgModule({
@@ -19,7 +19,7 @@ import {FileSystemInitializersModule} from './backend/file-system/initializers/f
     FormsModule,
     KeyboardShortcutsModule.forRoot(),
     HttpClientModule,
-    CommandsModule,
+    CommandParserModule,
     FileSystemInitializersModule
   ],
   providers: [],

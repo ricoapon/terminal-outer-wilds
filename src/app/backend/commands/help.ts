@@ -1,8 +1,8 @@
-import {CommandParser} from '../controller';
 import {CommandResponse} from '../types/command-types';
 import {AssetReader} from '../asset-reader';
 import {ParsedArgs} from '../command-line-argument-parser';
 import {Injectable} from '@angular/core';
+import {CommandParser} from './command-parser';
 
 @Injectable()
 export class Help implements CommandParser {
@@ -10,6 +10,10 @@ export class Help implements CommandParser {
 
   constructor(assetReader: AssetReader) {
     this.assetReader = assetReader;
+  }
+
+  mainCommand(): string {
+    return 'help';
   }
 
   public parseCommand(parsedArgs: ParsedArgs): CommandResponse {

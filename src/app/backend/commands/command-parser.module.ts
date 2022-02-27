@@ -1,5 +1,4 @@
 import {InjectionToken, NgModule} from '@angular/core';
-import {CommandParser} from '../controller';
 import {ChangeDirectory} from './change-directory';
 import {Execute} from './execute';
 import {Help} from './help';
@@ -7,6 +6,7 @@ import {ListDirectories} from './list-directories';
 import {Manual} from './manual';
 import {PresentWorkingDirectory} from './present-working-directory';
 import {Read} from './read';
+import {CommandParser} from './command-parser';
 
 export const COMMAND_PARSERS = new InjectionToken<CommandParser>('CommandParser');
 
@@ -24,5 +24,5 @@ export const COMMAND_PARSERS = new InjectionToken<CommandParser>('CommandParser'
   ],
   bootstrap: []
 })
-export class CommandsModule {
+export class CommandParserModule {
 }

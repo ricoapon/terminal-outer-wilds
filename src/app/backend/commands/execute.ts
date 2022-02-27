@@ -1,9 +1,9 @@
-import {CommandParser} from '../controller';
 import {CommandResponse} from '../types/command-types';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
 import {ProgramFile} from '../file-system/file-system-types';
 import {ParsedArgs} from '../command-line-argument-parser';
 import {Injectable} from '@angular/core';
+import {CommandParser} from './command-parser';
 
 @Injectable()
 export class Execute implements CommandParser {
@@ -11,6 +11,10 @@ export class Execute implements CommandParser {
 
   constructor(fileSystem: InMemoryFileSystem) {
     this.fileSystem = fileSystem;
+  }
+
+  mainCommand(): string {
+    return 'execute';
   }
 
   public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
