@@ -1,7 +1,8 @@
-import {InMemoryFileSystem, PropertiesAndFileSystemNodes} from './in-memory-file-system';
+import {InMemoryFileSystem} from './in-memory-file-system';
 import {Directory, DirectoryProperties, InMemoryFile, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
 import {Path} from './path';
 import {FileSystemInitializer} from './initializers/file-system-initializer';
+import {PropertiesAndFileSystemNodes} from './properties-and-file-system-nodes';
 
 class FileSystemInitializerForTest implements FileSystemInitializer {
   private static createPropertiesAndFileSystemNodes(values: FileSystemNode[]): PropertiesAndFileSystemNodes {

@@ -1,7 +1,10 @@
-import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
-import {CommandResponse, InputCommand} from '../types/command-types';
+import {CommandResponse} from '../types/command-types';
+import {ParsedArgs} from '../util/command-line-argument-parser';
+import {Injectable} from '@angular/core';
+import {CommandParser} from './command-parser';
 
+@Injectable()
 export class ChangeDirectory implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
 
@@ -9,9 +12,12 @@ export class ChangeDirectory implements CommandParser {
     this.fileSystem = fileSystem;
   }
 
-  public parseCommand(command: InputCommand): CommandResponse {
-    // The command should always be in the form 'cd <path>'.
-    const path = command.command.substr('cd '.length);
+  mainCommand(): string {
+    return 'cd';
+  }
+
+  public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
+    const path = parsedArgs.args[0];
 
     if (!this.fileSystem.changeDirectory(path)) {
       return {response: 'Given path is incorrect'};

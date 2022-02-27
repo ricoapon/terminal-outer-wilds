@@ -1,4 +1,3 @@
-import {PropertiesAndFileSystemNodes} from '../in-memory-file-system';
 import {Directory, InMemoryFile, SymbolicLinkToDirectory} from '../file-system-types';
 import {Path} from '../path';
 import {
@@ -6,7 +5,10 @@ import {
   createPropertiesAndFileSystemNodesWithColor,
   FileSystemInitializer
 } from './file-system-initializer';
+import {Injectable} from '@angular/core';
+import {PropertiesAndFileSystemNodes} from '../properties-and-file-system-nodes';
 
+@Injectable()
 export class Puzzle1Maze implements FileSystemInitializer {
   load(): Map<string, PropertiesAndFileSystemNodes> {
     const STARTING_DIR = '/puzzle-1/';

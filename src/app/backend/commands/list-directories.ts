@@ -1,8 +1,11 @@
-import {CommandResponse, InputCommand} from '../types/command-types';
-import {CommandParser} from '../controller';
+import {CommandResponse} from '../types/command-types';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
-import {Directory, ProgramFile} from '../file-system/file-system-types';
+import {Directory, InMemoryFile, ProgramFile} from '../file-system/file-system-types';
+import {ParsedArgs} from '../util/command-line-argument-parser';
+import {Injectable} from '@angular/core';
+import {CommandParser} from './command-parser';
 
+@Injectable()
 export class ListDirectories implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
 
@@ -10,7 +13,11 @@ export class ListDirectories implements CommandParser {
     this.fileSystem = fileSystem;
   }
 
-  public parseCommand(command: InputCommand): CommandResponse {
+  mainCommand(): string {
+    return 'ls';
+  }
+
+  public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
     const fileSystemNodes = this.fileSystem.listCurrentDirectoryNodes();
 
     if (fileSystemNodes.size === 0) {
@@ -36,7 +43,7 @@ export class ListDirectories implements CommandParser {
     for (const fileSystemNode of sortedFileSystemNodes) {
       if (fileSystemNode instanceof Directory) {
         output += 'd';
-      } else if (fileSystemNode instanceof InMemoryFileSystem) {
+      } else if (fileSystemNode instanceof InMemoryFile) {
         output += 'f';
       } else if (fileSystemNode instanceof ProgramFile) {
         output += 'p';

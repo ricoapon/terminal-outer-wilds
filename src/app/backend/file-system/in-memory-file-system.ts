@@ -1,7 +1,11 @@
 import {Directory, DirectoryProperties, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
 import {Path} from './path';
 import {FileSystemInitializer} from './initializers/file-system-initializer';
+import {Inject, Injectable} from '@angular/core';
+import {FILE_SYSTEM_INITIALIZERS} from './initializers/file-system-initializers.module';
+import {PropertiesAndFileSystemNodes} from './properties-and-file-system-nodes';
 
+@Injectable({providedIn: 'root'})
 export class InMemoryFileSystem {
   /** Contains the relative path the user walked through. Symbolic links are included in this path. */
   private currentPath = new Path('/');
@@ -10,7 +14,8 @@ export class InMemoryFileSystem {
   /** The map representing the in memory file system. Note that keys cannot be objects, so it is the string representation of paths. */
   private fileSystem: Map<string, PropertiesAndFileSystemNodes>;
 
-  constructor(fileSystemInitializers: FileSystemInitializer[]) {
+
+  constructor(@Inject(FILE_SYSTEM_INITIALIZERS) private fileSystemInitializers: FileSystemInitializer[]) {
     this.fileSystem = new Map<string, PropertiesAndFileSystemNodes>();
     for (const initializer of fileSystemInitializers) {
       const mapToAdd = initializer.load();
@@ -132,26 +137,6 @@ export class InMemoryFileSystem {
 
   public getCurrentAbsolutePath(): string {
     return this.currentAbsolutePath.toString();
-  }
-}
-
-export class PropertiesAndFileSystemNodes {
-  // tslint:disable-next-line:variable-name
-  private readonly _properties: DirectoryProperties;
-  // tslint:disable-next-line:variable-name
-  private readonly _fileSystemNodes: Set<FileSystemNode>;
-
-  constructor(properties: DirectoryProperties, fileSystemNodes: Set<FileSystemNode>) {
-    this._properties = properties;
-    this._fileSystemNodes = fileSystemNodes;
-  }
-
-  get properties(): DirectoryProperties {
-    return this._properties;
-  }
-
-  get fileSystemNodes(): Set<FileSystemNode> {
-    return this._fileSystemNodes;
   }
 }
 
