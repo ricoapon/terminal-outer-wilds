@@ -96,9 +96,9 @@ describe('InMemoryFileSystem', () => {
   });
 
   it('we can read files', () => {
-    expect(fileSystem.getFile('/dir1/file1.txt').content()).toEqual('Content1');
+    expect(fileSystem.getFile('/dir1/file1.txt').assetPath()).toEqual('Content1');
     changeDirectory('dir1');
-    expect(fileSystem.getFile('file1.txt').content()).toEqual('Content1');
-    expect(fileSystem.getFile('subdir1/subdir3/file6.txt').content()).toEqual('Content6');
+    expect(fileSystem.getFile('file1.txt').assetPath()).toEqual('Content1');
+    expect(fileSystem.getFile('subdir1/subdir3/file6.txt').assetPath()).toEqual('Content6');
   });
 });

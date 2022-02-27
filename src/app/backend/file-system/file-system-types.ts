@@ -18,7 +18,7 @@ export class InMemoryFile implements FileSystemNode {
     return this._name;
   }
 
-  content(): string {
+  assetPath(): string {
     return this._content;
   }
 

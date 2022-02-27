@@ -52,7 +52,7 @@ export class InMemoryFileSystem {
     }
 
     // There are slashes involved. So we have to find the new directory and read that file.
-    const pathToDirOfFile = new Path(pathAsString).getDirectoryAboveThisDirectory();
+    const pathToDirOfFile = new Path(pathAsString).getPathToParentDirectory();
     const result = this.determineChangeDirectoryNewPath(this.currentPath, this.currentAbsolutePath, pathToDirOfFile);
     if (result === undefined) {
       return undefined;
@@ -91,7 +91,7 @@ export class InMemoryFileSystem {
       }
 
       if (directory === '..') {
-        traversedAbsolutePath = traversedAbsolutePath.getDirectoryAboveThisDirectory();
+        traversedAbsolutePath = traversedAbsolutePath.getPathToParentDirectory();
         continue;
       }
 

@@ -2,6 +2,7 @@ import {AfterViewInit, Component} from '@angular/core';
 import {Controller} from './backend/controller';
 import {CommandResponse, InputCommand} from './backend/types/command-types';
 import {ShortcutInput} from 'ng-keyboard-shortcuts';
+import {HttpClient} from '@angular/common/http';
 
 export type Line = {
   location?: string,
@@ -15,7 +16,7 @@ export type Line = {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  private readonly controller: Controller = new Controller();
+  private readonly controller: Controller;
   readonly lines: Line[] = [{
     response:
       '   ____    _    _   _______   ______   _____     __          __  _____   _        _____     _____ \n' +
@@ -34,6 +35,10 @@ export class AppComponent implements AfterViewInit {
   fullScreen = false;
   fullScreenText: string;
   shortcuts: ShortcutInput[] = [];
+
+  constructor(private httpClient: HttpClient) {
+    this.controller = new Controller(httpClient);
+  }
 
   parseCommand(): void {
     const commandInput: InputCommand = {location: this.location, command: this.input};
