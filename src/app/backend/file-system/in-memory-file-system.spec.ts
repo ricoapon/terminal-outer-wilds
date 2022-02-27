@@ -1,5 +1,5 @@
 import {InMemoryFileSystem, PropertiesAndFileSystemNodes} from './in-memory-file-system';
-import {Directory, DirectoryProperties, File, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
+import {Directory, DirectoryProperties, InMemoryFile, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
 import {Path} from './path';
 import {FileSystemInitializer} from './initializers/file-system-initializer';
 
@@ -14,15 +14,15 @@ class FileSystemInitializerForTest implements FileSystemInitializer {
       new Directory('dir1')
     ]));
     map.set('/dir1', FileSystemInitializerForTest.createPropertiesAndFileSystemNodes([
-      new File('file1.txt'), new File('file2.txt'),
+      new InMemoryFile('file1.txt', 'Content1'), new InMemoryFile('file2.txt', 'Content2'),
       new Directory('subdir1'), new Directory('subdir2')
     ]));
     map.set('/dir1/subdir1', FileSystemInitializerForTest.createPropertiesAndFileSystemNodes([
-      new File('file3.txt'), new File('file4.txt'),
+      new InMemoryFile('file3.txt', 'Content3'), new InMemoryFile('file4.txt', 'Content4'),
       new Directory('subdir3'), new SymbolicLinkToDirectory('subdir4', new Path('/dir1'))
     ]));
     map.set('/dir1/subdir1/subdir3', FileSystemInitializerForTest.createPropertiesAndFileSystemNodes([
-      new File('file5.txt'), new File('file6.txt'),
+      new InMemoryFile('file5.txt', 'Content5'), new InMemoryFile('file6.txt', 'Content6'),
       new Directory('subdir5'), new SymbolicLinkToDirectory('subdir6', new Path('/dir1'))
     ]));
 
@@ -93,5 +93,12 @@ describe('InMemoryFileSystem', () => {
     changeDirectory('/');
     changeDirectory('..');
     expect(fileSystem.getCurrentAbsolutePath()).toEqual('/');
+  });
+
+  it('we can read files', () => {
+    expect(fileSystem.getFile('/dir1/file1.txt').content()).toEqual('Content1');
+    changeDirectory('dir1');
+    expect(fileSystem.getFile('file1.txt').content()).toEqual('Content1');
+    expect(fileSystem.getFile('subdir1/subdir3/file6.txt').content()).toEqual('Content6');
   });
 });

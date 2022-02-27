@@ -1,5 +1,5 @@
 import {PropertiesAndFileSystemNodes} from '../in-memory-file-system';
-import {Directory, File, SymbolicLinkToDirectory} from '../file-system-types';
+import {Directory, InMemoryFile, SymbolicLinkToDirectory} from '../file-system-types';
 import {Path} from '../path';
 import {
   createPropertiesAndFileSystemNodes,
@@ -38,7 +38,7 @@ export class Puzzle1Maze implements FileSystemInitializer {
       new SymbolicLinkToDirectory('dir4', startingDirectory),
     ]));
     map.set(STARTING_DIR + 'dir2/dir4/dir4/dir1', createPropertiesAndFileSystemNodes([
-      new File('You_found_the_exit.txt')
+      new InMemoryFile('You_found_the_exit.txt', 'Empty')
     ]));
 
     return map;
