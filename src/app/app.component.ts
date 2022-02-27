@@ -17,7 +17,7 @@ export type Line = {
 export class AppComponent implements AfterViewInit {
   private readonly controller: Controller = new Controller();
   readonly lines: Line[] = [];
-  location = 'somewhere';
+  location = '/';
   input: string;
   fullScreen = false;
   fullScreenText: string;
@@ -34,6 +34,10 @@ export class AppComponent implements AfterViewInit {
       this.fullScreenText = commandResponse.response;
     }
     this.input = '';
+
+    if (commandResponse.newCurrentDirectory) {
+      this.location = commandResponse.newCurrentDirectory;
+    }
   }
 
   quitFullScreen(): void {

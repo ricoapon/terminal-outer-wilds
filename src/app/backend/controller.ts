@@ -1,16 +1,41 @@
 import {InputCommand, CommandResponse} from './types/command-types';
+import {InMemoryFileSystem} from './file-system/in-memory-file-system';
+import {DummyFiles} from './file-system/initializers/dummy-files';
+import {ListDirectories} from './commands/list-directories';
+import {ChangeDirectory} from './commands/change-directory';
+import {PresentWorkingDirectory} from './commands/present-working-directory';
+
+export interface CommandParser {
+  parseCommand(inputCommand: InputCommand): CommandResponse;
+}
 
 /**
  * This class is the entry point for the entire backend. Commands are inserted here.
  */
-export class Controller {
-  public parseCommand(command: InputCommand): CommandResponse {
-    if (command.command === 'ls') {
-      return {
-        response: 'line\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\n',
-      };
-    }
-    if (command.command === 'help') {
+export class Controller implements CommandParser {
+  private readonly fileSystem: InMemoryFileSystem;
+  private readonly listDirectories: ListDirectories;
+  private readonly changeDirectory: ChangeDirectory;
+  private readonly presentWorkingDirectory: PresentWorkingDirectory;
+
+  constructor() {
+    this.fileSystem = new InMemoryFileSystem([new DummyFiles()]);
+    this.listDirectories = new ListDirectories(this.fileSystem);
+    this.changeDirectory = new ChangeDirectory(this.fileSystem);
+    this.presentWorkingDirectory = new PresentWorkingDirectory(this.fileSystem);
+  }
+
+  public parseCommand(inputCommand: InputCommand): CommandResponse {
+    const programCommand = inputCommand.command.indexOf(' ') < 0 ? inputCommand.command :
+      inputCommand.command.substr(0, inputCommand.command.indexOf(' '));
+
+    if (programCommand === 'ls') {
+      return this.listDirectories.parseCommand(inputCommand);
+    } else if (programCommand === 'cd') {
+      return this.changeDirectory.parseCommand(inputCommand);
+    } else if (programCommand === 'pwd') {
+      return this.presentWorkingDirectory.parseCommand(inputCommand);
+    } else if (programCommand === 'help') {
       return {
         response: 'Lorem ipsum dolor sit amet, an saepe doctus mel, ne suas populo hendrerit sed, ferri libris everti et mel. Aeque tractatos ius ne, duo et graeco discere, ius ei habemus minimum. Aliquid insolens expetenda ei nec. Laudem nostrud sapientem quo an. Solet splendide persequeris in per, vel liber lucilius ocurreret ne. At cum convenire comprehensam, ne qui scripta saperet, no dico nobis soleat nec. An per iisque utroque.\n\n' +
           'Quo nihil saperet an, no mel elaboraret sadipscing. Dicam volumus mediocritatem ut nec, pro ex ullum perpetua. Hinc vocent ius et. Te ius suas brute, ad sed duis ipsum eligendi, ex vim graece regione delicatissimi.\n\n' +
