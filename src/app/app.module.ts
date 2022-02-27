@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import {FormsModule} from '@angular/forms';
 import {KeyboardShortcutsModule} from 'ng-keyboard-shortcuts';
 import { AutofocusDirective } from './autofocus.directive';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { AutofocusDirective } from './autofocus.directive';
   imports: [
     BrowserModule,
     FormsModule,
-    KeyboardShortcutsModule.forRoot()
+    KeyboardShortcutsModule.forRoot(),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -10,6 +10,8 @@ import {Puzzle2InvisibleDir} from './file-system/initializers/puzzle2-invisible-
 import {Read} from './commands/read';
 import {Help} from './commands/help';
 import {Tutorial} from './file-system/initializers/tutorial';
+import {HttpClient} from '@angular/common/http';
+import {AssetReader} from './asset-reader';
 
 export interface CommandParser {
   parseCommand(inputCommand: InputCommand): CommandResponse;
@@ -25,7 +27,8 @@ export class Controller implements CommandParser {
   private readonly presentWorkingDirectory: PresentWorkingDirectory;
   private readonly read: Read;
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
+    const assetReader = new AssetReader(httpClient);
     this.fileSystem = new InMemoryFileSystem([new Root(), new DummyFiles(), new Puzzle1Maze(), new Puzzle2InvisibleDir(), new Tutorial()]);
     // We want to start in the tutorial directory.
     this.fileSystem.changeDirectory('tutorial');
