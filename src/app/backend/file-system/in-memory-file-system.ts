@@ -1,5 +1,6 @@
 import {Directory, DirectoryProperties, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
 import {Path} from './path';
+import {FileSystemInitializer} from './initializers/file-system-initializer';
 
 export class InMemoryFileSystem {
   /** Contains the relative path the user walked through. Symbolic links are included in this path. */
@@ -125,6 +126,3 @@ export class PropertiesAndFileSystemNodes {
   }
 }
 
-export interface FileSystemInitializer {
-  load(): Map<string, PropertiesAndFileSystemNodes>;
-}
