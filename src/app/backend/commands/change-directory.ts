@@ -17,6 +17,10 @@ export class ChangeDirectory implements CommandParser {
       return {response: 'Given path is incorrect'};
     }
 
-    return {response: '', newCurrentDirectory: this.fileSystem.currentDirectoryName()};
+    return {
+      response: '',
+      newCurrentDirectory: this.fileSystem.currentDirectoryName(),
+      newBackgroundColor: this.fileSystem.currentDirectoryProperties().color()
+    };
   }
 }

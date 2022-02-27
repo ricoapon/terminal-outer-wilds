@@ -18,6 +18,7 @@ export class AppComponent implements AfterViewInit {
   private readonly controller: Controller = new Controller();
   readonly lines: Line[] = [];
   location = '/';
+  backgroundColor = 'blue';
   input: string;
   fullScreen = false;
   fullScreenText: string;
@@ -37,6 +38,10 @@ export class AppComponent implements AfterViewInit {
 
     if (commandResponse.newCurrentDirectory) {
       this.location = commandResponse.newCurrentDirectory;
+    }
+
+    if (commandResponse.newBackgroundColor) {
+      this.backgroundColor = commandResponse.newBackgroundColor;
     }
   }
 

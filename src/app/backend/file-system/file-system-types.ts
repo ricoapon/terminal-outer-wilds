@@ -61,7 +61,14 @@ export class SymbolicLinkToDirectory implements FileSystemNode {
 }
 
 export class DirectoryProperties {
-  owner(): string {
-    return 'root';
+  private readonly _color: string;
+
+  constructor(color?: string) {
+    this._color = color;
+  }
+
+  /** All possible colors can be found in app.component.css (.dynamic-bg-<color>). */
+  color(): string {
+    return this._color;
   }
 }

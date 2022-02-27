@@ -7,4 +7,5 @@ export type CommandResponse = {
   response: string,
   fullScreen?: boolean,
   newCurrentDirectory?: string,
+  newBackgroundColor?: string,
 };

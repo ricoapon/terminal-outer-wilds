@@ -1,7 +1,11 @@
 import {PropertiesAndFileSystemNodes} from '../in-memory-file-system';
 import {Directory, File, SymbolicLinkToDirectory} from '../file-system-types';
 import {Path} from '../path';
-import {createPropertiesAndFileSystemNodes, FileSystemInitializer} from './file-system-initializer';
+import {
+  createPropertiesAndFileSystemNodes,
+  createPropertiesAndFileSystemNodesWithColor,
+  FileSystemInitializer
+} from './file-system-initializer';
 
 export class Puzzle1Maze implements FileSystemInitializer {
   load(): Map<string, PropertiesAndFileSystemNodes> {
@@ -9,7 +13,7 @@ export class Puzzle1Maze implements FileSystemInitializer {
     const startingDirectory = new Path('/puzzle-1');
 
     const map = new Map();
-    map.set('/puzzle-1', createPropertiesAndFileSystemNodes([
+    map.set('/puzzle-1', createPropertiesAndFileSystemNodesWithColor('purple', [
       new SymbolicLinkToDirectory('dir1', startingDirectory),
       new Directory('dir2'),
       new SymbolicLinkToDirectory('dir3', startingDirectory),
