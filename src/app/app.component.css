@@ -101,3 +101,9 @@
 .dynamic-bg-blue {
   background: linear-gradient(135deg, #0f55e4, #0a3a9c);
 }
+.dynamic-bg-purple {
+  background: linear-gradient(45deg, #57003f 0%,#f57453 100%);
+}
+.dynamic-bg-green {
+  background-color: green;
+}

@@ -39,6 +39,10 @@ export class AppComponent implements AfterViewInit {
     if (commandResponse.newCurrentDirectory) {
       this.location = commandResponse.newCurrentDirectory;
     }
+
+    if (commandResponse.newBackgroundColor) {
+      this.background = commandResponse.newBackgroundColor;
+    }
   }
 
   quitFullScreen(): void {
