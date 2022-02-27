@@ -11,7 +11,7 @@ export class ChangeDirectory implements CommandParser {
 
   public parseCommand(command: InputCommand): CommandResponse {
     // The command should always be in the form 'cd <path>'.
-    const path = command.command.substr(3);
+    const path = command.command.substr('cd '.length);
 
     if (!this.fileSystem.changeDirectory(path)) {
       return {response: 'Given path is incorrect'};

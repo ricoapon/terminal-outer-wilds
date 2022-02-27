@@ -7,6 +7,7 @@ import {PresentWorkingDirectory} from './commands/present-working-directory';
 import {Root} from './file-system/initializers/root';
 import {Puzzle1Maze} from './file-system/initializers/puzzle-1-maze';
 import {Puzzle2InvisibleDir} from './file-system/initializers/puzzle2-invisible-dir';
+import {Read} from './commands/read';
 
 export interface CommandParser {
   parseCommand(inputCommand: InputCommand): CommandResponse;
@@ -20,12 +21,14 @@ export class Controller implements CommandParser {
   private readonly listDirectories: ListDirectories;
   private readonly changeDirectory: ChangeDirectory;
   private readonly presentWorkingDirectory: PresentWorkingDirectory;
+  private readonly read: Read;
 
   constructor() {
     this.fileSystem = new InMemoryFileSystem([new Root(), new DummyFiles(), new Puzzle1Maze(), new Puzzle2InvisibleDir()]);
     this.listDirectories = new ListDirectories(this.fileSystem);
     this.changeDirectory = new ChangeDirectory(this.fileSystem);
     this.presentWorkingDirectory = new PresentWorkingDirectory(this.fileSystem);
+    this.read = new Read(this.fileSystem);
   }
 
   public parseCommand(inputCommand: InputCommand): CommandResponse {
@@ -38,6 +41,8 @@ export class Controller implements CommandParser {
       return this.changeDirectory.parseCommand(inputCommand);
     } else if (programCommand === 'pwd') {
       return this.presentWorkingDirectory.parseCommand(inputCommand);
+    } else if (programCommand === 'read') {
+      return this.read.parseCommand(inputCommand);
     } else if (programCommand === 'help') {
       return {
         response: 'Lorem ipsum dolor sit amet, an saepe doctus mel, ne suas populo hendrerit sed, ferri libris everti et mel. Aeque tractatos ius ne, duo et graeco discere, ius ei habemus minimum. Aliquid insolens expetenda ei nec. Laudem nostrud sapientem quo an. Solet splendide persequeris in per, vel liber lucilius ocurreret ne. At cum convenire comprehensam, ne qui scripta saperet, no dico nobis soleat nec. An per iisque utroque.\n\n' +
