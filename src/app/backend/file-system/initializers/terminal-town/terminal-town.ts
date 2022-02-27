@@ -1,8 +1,11 @@
 import {Injectable} from '@angular/core';
 import {PropertiesAndFileSystemNodes} from '../../properties-and-file-system-nodes';
 import {createPropertiesAndFileSystemNodes, FileSystemInitializer} from '../file-system-initializer';
-import {Directory, InMemoryFile, SymbolicLinkToDirectory} from '../../file-system-types';
+import {Directory, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from '../../file-system-types';
 import {Path} from '../../path';
+import {BitcoinMiner} from './bitcoin-miner';
+import {Hasher} from './hasher';
+import {Wallet} from './wallet';
 
 @Injectable()
 export class TerminalTown implements FileSystemInitializer {
@@ -13,6 +16,7 @@ export class TerminalTown implements FileSystemInitializer {
     map.set(STARTING_DIR, createPropertiesAndFileSystemNodes([
       new Directory('house1'),
       new Directory('garden'),
+      new Directory('mine'),
     ]));
 
     map.set(STARTING_DIR + '/house1', createPropertiesAndFileSystemNodes([
@@ -21,6 +25,16 @@ export class TerminalTown implements FileSystemInitializer {
 
     this.addGarden(map, STARTING_DIR + '/garden');
 
+    map.set(STARTING_DIR + '/mine', createPropertiesAndFileSystemNodes([
+      new ProgramFile('bitcoin.miner', new BitcoinMiner()),
+      new ProgramFile('SHA256', new Hasher()),
+      new InMemoryFile('bitcoin1', null),
+      new InMemoryFile('bitcoin2', null),
+      new InMemoryFile('bitcoin3', null),
+      new InMemoryFile('bitcoin4', null),
+      new InMemoryFile('bitcoin5', null),
+      new ProgramFile('wallet', new Wallet()),
+    ]));
 
     return map;
   }
