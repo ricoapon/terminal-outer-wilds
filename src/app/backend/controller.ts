@@ -2,6 +2,7 @@ import {InputCommand, CommandResponse} from './types/command-types';
 import {InMemoryFileSystem} from './file-system/in-memory-file-system';
 import {DummyFiles} from './file-system/initializers/dummy-files';
 import {ListDirectories} from './commands/list-directories';
+import {ChangeDirectory} from './commands/change-directory';
 
 export interface CommandParser {
   parseCommand(inputCommand: InputCommand): CommandResponse;
@@ -13,17 +14,22 @@ export interface CommandParser {
 export class Controller implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
   private readonly listDirectories: ListDirectories;
+  private readonly changeDirectory: ChangeDirectory;
 
   constructor() {
     this.fileSystem = new InMemoryFileSystem([new DummyFiles()]);
     this.listDirectories = new ListDirectories(this.fileSystem);
+    this.changeDirectory = new ChangeDirectory(this.fileSystem);
   }
 
-  public parseCommand(command: InputCommand): CommandResponse {
-    const programCommand = command.command.indexOf(' ') < 0 ? command.command : command.command.substr(0, command.command.indexOf(' '));
+  public parseCommand(inputCommand: InputCommand): CommandResponse {
+    const programCommand = inputCommand.command.indexOf(' ') < 0 ? inputCommand.command :
+      inputCommand.command.substr(0, inputCommand.command.indexOf(' '));
 
     if (programCommand === 'ls') {
-      return this.listDirectories.parseCommand(command);
+      return this.listDirectories.parseCommand(inputCommand);
+    } else if (programCommand === 'cd') {
+      return this.changeDirectory.parseCommand(inputCommand);
     } else if (programCommand === 'help') {
       return {
         response: 'Lorem ipsum dolor sit amet, an saepe doctus mel, ne suas populo hendrerit sed, ferri libris everti et mel. Aeque tractatos ius ne, duo et graeco discere, ius ei habemus minimum. Aliquid insolens expetenda ei nec. Laudem nostrud sapientem quo an. Solet splendide persequeris in per, vel liber lucilius ocurreret ne. At cum convenire comprehensam, ne qui scripta saperet, no dico nobis soleat nec. An per iisque utroque.\n\n' +
