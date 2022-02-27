@@ -18,6 +18,7 @@ export class AppComponent implements AfterViewInit {
   private readonly controller: Controller = new Controller();
   readonly lines: Line[] = [];
   location = '/';
+  background = 'blue';
   input: string;
   fullScreen = false;
   fullScreenText: string;

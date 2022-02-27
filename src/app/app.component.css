@@ -96,5 +96,8 @@
   appearance: none;
   font-family: 'Ubuntu Mono';
   font-size: 14px;
+}
 
+.dynamic-bg-blue {
+  background: linear-gradient(135deg, #0f55e4, #0a3a9c);
 }
