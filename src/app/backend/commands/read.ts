@@ -1,8 +1,9 @@
 import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
-import {CommandResponse, InputCommand} from '../types/command-types';
+import {CommandResponse} from '../types/command-types';
 import {AssetReader} from '../asset-reader';
 import {InMemoryFile} from '../file-system/file-system-types';
+import {ParsedArgs} from '../command-line-argument-parser';
 
 export class Read implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
@@ -13,9 +14,9 @@ export class Read implements CommandParser {
     this.assetReader = assetReader;
   }
 
-  public parseCommand(command: InputCommand): CommandResponse {
+  public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
     // The command should always be in the form 'read <path>'.
-    const path = command.command.substr('read '.length);
+    const path = parsedArgs.args[0];
     const file = this.fileSystem.getNode(path);
     if (file === undefined) {
       return {response: 'File could not be found'};

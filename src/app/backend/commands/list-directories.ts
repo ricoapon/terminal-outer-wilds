@@ -1,7 +1,8 @@
-import {CommandResponse, InputCommand} from '../types/command-types';
+import {CommandResponse} from '../types/command-types';
 import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
 import {Directory, ProgramFile} from '../file-system/file-system-types';
+import {ParsedArgs} from '../command-line-argument-parser';
 
 export class ListDirectories implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
@@ -10,7 +11,7 @@ export class ListDirectories implements CommandParser {
     this.fileSystem = fileSystem;
   }
 
-  public parseCommand(command: InputCommand): CommandResponse {
+  public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
     const fileSystemNodes = this.fileSystem.listCurrentDirectoryNodes();
 
     if (fileSystemNodes.size === 0) {

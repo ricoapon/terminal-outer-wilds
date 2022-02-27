@@ -1,6 +1,7 @@
 import {CommandParser} from '../controller';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
-import {CommandResponse, InputCommand} from '../types/command-types';
+import {CommandResponse} from '../types/command-types';
+import {ParsedArgs} from '../command-line-argument-parser';
 
 export class PresentWorkingDirectory implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
@@ -9,8 +10,8 @@ export class PresentWorkingDirectory implements CommandParser {
     this.fileSystem = fileSystem;
   }
 
-  public parseCommand(inputCommand: InputCommand): CommandResponse {
-    if (inputCommand.command === 'pwd -P') {
+  public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
+    if (parsedArgs.flags.has('P')) {
       return {response: this.fileSystem.getCurrentAbsolutePath()};
     }
 

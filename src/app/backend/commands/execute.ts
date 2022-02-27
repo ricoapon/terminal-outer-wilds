@@ -1,7 +1,8 @@
 import {CommandParser} from '../controller';
-import {CommandResponse, InputCommand} from '../types/command-types';
+import {CommandResponse} from '../types/command-types';
 import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
 import {ProgramFile} from '../file-system/file-system-types';
+import {ParsedArgs} from '../command-line-argument-parser';
 
 export class Execute implements CommandParser {
   private readonly fileSystem: InMemoryFileSystem;
@@ -10,9 +11,9 @@ export class Execute implements CommandParser {
     this.fileSystem = fileSystem;
   }
 
-  public parseCommand(command: InputCommand): CommandResponse {
+  public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
     // The command should always be in the form 'execute <path> <arguments>'.
-    const path = command.command.split(' ')[1];
+    const path = parsedArgs.args[0];
     const program = this.fileSystem.getNode(path);
 
     if (program === undefined) {
@@ -23,7 +24,6 @@ export class Execute implements CommandParser {
       return {response: 'Given path is not a program'};
     }
 
-    const commandForProgram = command.command.substr('execute '.length + path.length + 1);
-    return program.program().execute(commandForProgram);
+    return program.program().execute(parsedArgs);
   }
 }

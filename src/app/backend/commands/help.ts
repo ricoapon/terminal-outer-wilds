@@ -1,6 +1,7 @@
 import {CommandParser} from '../controller';
-import {CommandResponse, InputCommand} from '../types/command-types';
+import {CommandResponse} from '../types/command-types';
 import {AssetReader} from '../asset-reader';
+import {ParsedArgs} from '../command-line-argument-parser';
 
 export class Help implements CommandParser {
   private readonly assetReader: AssetReader;
@@ -9,7 +10,7 @@ export class Help implements CommandParser {
     this.assetReader = assetReader;
   }
 
-  public parseCommand(command: InputCommand): CommandResponse {
+  public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
     return {response: this.assetReader.get('help/help.txt'), fullScreen: true};
   }
 }

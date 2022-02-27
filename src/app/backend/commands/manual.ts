@@ -1,6 +1,7 @@
 import {CommandParser} from '../controller';
 import {AssetReader} from '../asset-reader';
-import {CommandResponse, InputCommand} from '../types/command-types';
+import {CommandResponse} from '../types/command-types';
+import {ParsedArgs} from '../command-line-argument-parser';
 
 export class Manual implements CommandParser {
   private readonly assetReader: AssetReader;
@@ -9,9 +10,9 @@ export class Manual implements CommandParser {
     this.assetReader = assetReader;
   }
 
-  public parseCommand(command: InputCommand): CommandResponse {
+  public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
     // The command should always be in the form 'man <path>'.
-    const commandToGetInformationOn = command.command.substr('man '.length);
+    const commandToGetInformationOn = parsedArgs.args[0];
 
     const fileContent = this.assetReader.get('man/' + commandToGetInformationOn + '.txt');
 

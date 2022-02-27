@@ -14,15 +14,16 @@ import {HttpClient} from '@angular/common/http';
 import {AssetReader} from './asset-reader';
 import {Manual} from './commands/manual';
 import {Execute} from './commands/execute';
+import {parseCommandLineArguments, ParsedArgs} from './command-line-argument-parser';
 
 export interface CommandParser {
-  parseCommand(inputCommand: InputCommand): CommandResponse;
+  parseCommand(parsedArgs: ParsedArgs): CommandResponse;
 }
 
 /**
  * This class is the entry point for the entire backend. Commands are inserted here.
  */
-export class Controller implements CommandParser {
+export class Controller {
   private readonly fileSystem: InMemoryFileSystem;
   private readonly listDirectories: ListDirectories;
   private readonly changeDirectory: ChangeDirectory;
@@ -47,23 +48,23 @@ export class Controller implements CommandParser {
   }
 
   public parseCommand(inputCommand: InputCommand): CommandResponse {
-    const programCommand = inputCommand.command.indexOf(' ') < 0 ? inputCommand.command :
-      inputCommand.command.substr(0, inputCommand.command.indexOf(' '));
+    const parsedArgs = parseCommandLineArguments(inputCommand.command);
+    const mainCommand = parsedArgs.mainCommand;
 
-    if (programCommand === 'ls') {
-      return this.listDirectories.parseCommand(inputCommand);
-    } else if (programCommand === 'cd') {
-      return this.changeDirectory.parseCommand(inputCommand);
-    } else if (programCommand === 'pwd') {
-      return this.presentWorkingDirectory.parseCommand(inputCommand);
-    } else if (programCommand === 'read') {
-      return this.read.parseCommand(inputCommand);
-    } else if (programCommand === 'man') {
-      return this.manual.parseCommand(inputCommand);
-    } else if (programCommand === 'help') {
-      return this.help.parseCommand(inputCommand);
-    } else if (programCommand === 'execute') {
-      return this.execute.parseCommand(inputCommand);
+    if (mainCommand === 'ls') {
+      return this.listDirectories.parseCommand(parsedArgs);
+    } else if (mainCommand === 'cd') {
+      return this.changeDirectory.parseCommand(parsedArgs);
+    } else if (mainCommand === 'pwd') {
+      return this.presentWorkingDirectory.parseCommand(parsedArgs);
+    } else if (mainCommand === 'read') {
+      return this.read.parseCommand(parsedArgs);
+    } else if (mainCommand === 'man') {
+      return this.manual.parseCommand(parsedArgs);
+    } else if (mainCommand === 'help') {
+      return this.help.parseCommand(parsedArgs);
+    } else if (mainCommand === 'execute') {
+      return this.execute.parseCommand(parsedArgs);
 
     }
     return {response: 'Unknown command'};

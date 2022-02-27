@@ -1,5 +1,6 @@
 import {Path} from './path';
 import {CommandResponse} from '../types/command-types';
+import {ParsedArgs} from '../command-line-argument-parser';
 
 export interface FileSystemNode {
   name(): string;
@@ -103,5 +104,5 @@ export class ProgramFile implements FileSystemNode {
 }
 
 export interface Program {
-  execute(command: string): CommandResponse;
+  execute(parsedArgs: ParsedArgs): CommandResponse;
 }
