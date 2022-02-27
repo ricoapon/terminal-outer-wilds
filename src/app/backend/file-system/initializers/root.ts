@@ -8,6 +8,7 @@ export class Root implements FileSystemInitializer {
     const map = new Map();
     map.set('/', createPropertiesAndFileSystemNodesWithColor('blue', [
       new Directory('dummy-files'),
+      new Directory('tutorial'),
       new Directory('puzzle-1'),
       new Directory('puzzle-2'),
     ]));

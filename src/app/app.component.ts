@@ -28,7 +28,7 @@ export class AppComponent implements AfterViewInit {
       'Welcome to this magical server. Take a look around and enjoy yourself with the puzzles.\n' +
       'If this is your first time playing, type \'help\' and press enter.\n\n',
   }];
-  location = '/';
+  location = '/tutorial';
   backgroundColor = 'blue';
   input: string;
   fullScreen = false;

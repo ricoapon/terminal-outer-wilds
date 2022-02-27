@@ -9,6 +9,7 @@ import {Puzzle1Maze} from './file-system/initializers/puzzle-1-maze';
 import {Puzzle2InvisibleDir} from './file-system/initializers/puzzle2-invisible-dir';
 import {Read} from './commands/read';
 import {Help} from './commands/help';
+import {Tutorial} from './file-system/initializers/tutorial';
 
 export interface CommandParser {
   parseCommand(inputCommand: InputCommand): CommandResponse;
@@ -25,7 +26,9 @@ export class Controller implements CommandParser {
   private readonly read: Read;
 
   constructor() {
-    this.fileSystem = new InMemoryFileSystem([new Root(), new DummyFiles(), new Puzzle1Maze(), new Puzzle2InvisibleDir()]);
+    this.fileSystem = new InMemoryFileSystem([new Root(), new DummyFiles(), new Puzzle1Maze(), new Puzzle2InvisibleDir(), new Tutorial()]);
+    // We want to start in the tutorial directory.
+    this.fileSystem.changeDirectory('tutorial');
     this.listDirectories = new ListDirectories(this.fileSystem);
     this.changeDirectory = new ChangeDirectory(this.fileSystem);
     this.presentWorkingDirectory = new PresentWorkingDirectory(this.fileSystem);
