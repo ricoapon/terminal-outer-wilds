@@ -1,16 +1,30 @@
 import {InputCommand, CommandResponse} from './types/command-types';
+import {InMemoryFileSystem} from './file-system/in-memory-file-system';
+import {DummyFiles} from './file-system/initializers/dummy-files';
+import {ListDirectories} from './commands/list-directories';
+
+export interface CommandParser {
+  parseCommand(inputCommand: InputCommand): CommandResponse;
+}
 
 /**
  * This class is the entry point for the entire backend. Commands are inserted here.
  */
-export class Controller {
+export class Controller implements CommandParser {
+  private readonly fileSystem: InMemoryFileSystem;
+  private readonly listDirectories: ListDirectories;
+
+  constructor() {
+    this.fileSystem = new InMemoryFileSystem([new DummyFiles()]);
+    this.listDirectories = new ListDirectories(this.fileSystem);
+  }
+
   public parseCommand(command: InputCommand): CommandResponse {
-    if (command.command === 'ls') {
-      return {
-        response: 'line\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\n',
-      };
-    }
-    if (command.command === 'help') {
+    const programCommand = command.command.indexOf(' ') < 0 ? command.command : command.command.substr(0, command.command.indexOf(' '));
+
+    if (programCommand === 'ls') {
+      return this.listDirectories.parseCommand(command);
+    } else if (programCommand === 'help') {
       return {
         response: 'Lorem ipsum dolor sit amet, an saepe doctus mel, ne suas populo hendrerit sed, ferri libris everti et mel. Aeque tractatos ius ne, duo et graeco discere, ius ei habemus minimum. Aliquid insolens expetenda ei nec. Laudem nostrud sapientem quo an. Solet splendide persequeris in per, vel liber lucilius ocurreret ne. At cum convenire comprehensam, ne qui scripta saperet, no dico nobis soleat nec. An per iisque utroque.\n\n' +
           'Quo nihil saperet an, no mel elaboraret sadipscing. Dicam volumus mediocritatem ut nec, pro ex ullum perpetua. Hinc vocent ius et. Te ius suas brute, ad sed duis ipsum eligendi, ex vim graece regione delicatissimi.\n\n' +
