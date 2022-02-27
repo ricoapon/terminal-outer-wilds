@@ -1,7 +1,8 @@
 import {PropertiesAndFileSystemNodes} from '../in-memory-file-system';
-import {Directory, SymbolicLinkToDirectory} from '../file-system-types';
+import {Directory, ProgramFile, SymbolicLinkToDirectory} from '../file-system-types';
 import {Path} from '../path';
 import {createPropertiesAndFileSystemNodes, FileSystemInitializer} from './file-system-initializer';
+import {TutorialNpc} from '../../programs/tutorial-npc';
 
 export class DummyFiles implements FileSystemInitializer {
   load(): Map<string, PropertiesAndFileSystemNodes> {
@@ -9,7 +10,9 @@ export class DummyFiles implements FileSystemInitializer {
 
     const map = new Map();
     map.set('/dummy-files', createPropertiesAndFileSystemNodes([
-      new Directory('dir1'), new Directory('dir2')]));
+      new Directory('dir1'), new Directory('dir2'),
+      new ProgramFile('npc.sh', new TutorialNpc())
+    ]));
 
     map.set(STARTING_DIR + 'dir2', createPropertiesAndFileSystemNodes([]));
     map.set(STARTING_DIR + 'dir1', createPropertiesAndFileSystemNodes([
