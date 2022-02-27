@@ -6,6 +6,7 @@ export class AssetReader {
   private readonly assetsToDownload: string[] = ['help/help.txt',
     'tutorial/step-1.txt', 'tutorial/step-3.txt',
     'puzzle-2/README.txt', 'puzzle-2/You_found_it.txt',
+    'man/cd.txt', 'man/help.txt', 'man/ls.txt', 'man/man.txt', 'man/pwd.txt'
   ];
   private finishedDownloading = false;
 
