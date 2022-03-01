@@ -3,10 +3,38 @@ export class Path {
   private readonly pathAsString: string;
 
   constructor(pathAsString: string) {
+    pathAsString = this.removeDoubleDot(pathAsString);
+
     while (pathAsString.endsWith('/') && pathAsString !== '/') {
       pathAsString = pathAsString.substr(0, pathAsString.length - 1);
     }
     this.pathAsString = pathAsString;
+  }
+
+  // noinspection JSMethodCanBeStatic
+  private removeDoubleDot(path: string): string {
+    const isAbsolute = path.startsWith('/');
+    // First we remove all /dir/.. and dir/../ parts of the string.
+    const regex1 = new RegExp('\/\\w+\/\\.\\.');
+    const regex2 = new RegExp('\\w+\/\\.\\.\/');
+    while (path.match(regex1) || path.match(regex2)) {
+      path = path.replace(regex1, '');
+      path = path.replace(regex2, '');
+    }
+
+    // Any leftovers are now word/.. or starting with /.., so remove these as well.
+    const regex3 = new RegExp('\\w+\/\\.\\.');
+    const regex4 = new RegExp('^\/\\.\\.');
+    while (path.match(regex3) || path.match(regex4)) {
+      path = path.replace(regex3, '');
+      path = path.replace(regex4, '');
+    }
+
+    if (isAbsolute && path.length === 0) {
+      return '/';
+    }
+
+    return path;
   }
 
   public resolve(relativePath: Path | string): Path {

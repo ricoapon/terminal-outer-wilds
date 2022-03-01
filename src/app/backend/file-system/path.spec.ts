@@ -36,4 +36,15 @@ describe('Path', () => {
     expect(new Path('relative/path/somewhere').getPathToParentDirectory().toString()).toEqual('relative/path');
     expect(() => new Path('relative').getPathToParentDirectory().toString()).toThrowError();
   });
+
+  it('.. is removed from the stored path', () => {
+    expect(new Path('/directory/..').toString()).toEqual('/');
+    expect(new Path('/sub/directory_123/..').toString()).toEqual('/sub');
+    expect(new Path('/..').toString()).toEqual('/');
+    expect(new Path('/sub/directory/../../../..').toString()).toEqual('/');
+    expect(new Path('directory/..').toString()).toEqual('');
+    expect(new Path('sub/directory_123/..').toString()).toEqual('sub');
+    expect(new Path('..').toString()).toEqual('..');
+    expect(new Path('sub/directory/../../../..').toString()).toEqual('../..');
+  });
 });
