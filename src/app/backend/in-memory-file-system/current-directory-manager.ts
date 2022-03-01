@@ -6,6 +6,8 @@ import {InMemoryFileSystemFacade} from './in-memory-file-system-facade';
  * current directory.
  */
 export class CurrentDirectoryManager {
+  private currentPath: AbsolutePath = AbsolutePath.root();
+
   private readonly inMemoryFileSystemFacade: InMemoryFileSystemFacade;
 
   constructor(inMemoryFileSystemFacade: InMemoryFileSystemFacade) {
@@ -13,14 +15,28 @@ export class CurrentDirectoryManager {
   }
 
   public currentDirectory(): AbsolutePath {
-    return undefined;
+    return this.currentPath;
   }
 
   public changeCurrentDirectory(path: string | Path): boolean {
-    return false;
+    if (!(path instanceof Path)) {
+      path = new Path(path);
+    }
+
+    const newPath = this.currentPath.resolve(path);
+    if (this.inMemoryFileSystemFacade.getNode(path) === undefined) {
+      return false;
+    }
+
+    this.currentPath = newPath;
+    return true;
   }
 
   public determineAbsolutePathFromPath(path: string | Path): AbsolutePath {
-    return undefined;
+    if (!(path instanceof Path)) {
+      path = new Path(path);
+    }
+
+    return this.currentPath.resolve(path);
   }
 }
