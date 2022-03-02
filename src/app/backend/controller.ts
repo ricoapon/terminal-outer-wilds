@@ -41,6 +41,10 @@ export class Controller {
     if (!this.commandParserMap.has(parsedArgs.mainCommand)) {
       return {response: 'Unknown command'};
     }
-    return this.commandParserMap.get(parsedArgs.mainCommand).parseCommand(parsedArgs);
+    try {
+      return this.commandParserMap.get(parsedArgs.mainCommand).parseCommand(parsedArgs);
+    } catch (e) {
+      return {response: 'An error occurred. Please contact the administrator. \n' + e.stack};
+    }
   }
 }
