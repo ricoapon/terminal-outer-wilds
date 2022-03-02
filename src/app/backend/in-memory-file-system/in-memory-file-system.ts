@@ -1,32 +1,94 @@
-import {AbsolutePath} from './paths';
-import {DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFile} from './file-system-types';
+import {AbsolutePath, Path} from './paths';
+import {Directory, DirectoryProperties, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
 
 /**
  * The class that keeps track of the actual file system.
  * This class only works with absolute paths.
  */
 export class InMemoryFileSystem {
-  public getNode(absolutePath: AbsolutePath): FileSystemNode {
+  /** Maps absolute paths to corresponding nodes. */
+  private readonly fileSystemNodes: Map<string, FileSystemNode>;
+
+  constructor() {
+    this.fileSystemNodes = new Map();
+    this.fileSystemNodes.set(AbsolutePath.root().toString(), new Directory(AbsolutePath.root().toString(), new Set(),
+      new DirectoryProperties('blue', false)));
+  }
+
+  private static determineNodeWithName(name: string, fileSystemNodes: Set<FileSystemNode>): FileSystemNode {
+    for (const fileSystemNode of fileSystemNodes) {
+      if (fileSystemNode.name() === name) {
+        return fileSystemNode;
+      }
+    }
     return undefined;
+  }
+
+  /** Traverses the nodes and determines the path without symbolic links. If the path does not exist, return undefined. */
+  private determineExistingPathWithoutSymbolicLinks(absolutePath: AbsolutePath): AbsolutePath {
+    // Anything without symlinks can be returned directly. Besides performance, this makes sure that root also returns the right value.
+    if (this.fileSystemNodes.has(absolutePath.toString())) {
+      return absolutePath;
+    }
+
+    const nodesToTraverse = absolutePath.listOfDirectories();
+    let traversedAbsolutePath = AbsolutePath.root();
+    for (const node of nodesToTraverse) {
+      const traversedAbsolutePathDirectory = this.fileSystemNodes.get(traversedAbsolutePath.toString());
+      // If the variable is undefined, the instanceof will return false as well.
+      if (!(traversedAbsolutePathDirectory instanceof Directory)) {
+        return undefined;
+      }
+
+      const fileSystemNode = InMemoryFileSystem.determineNodeWithName(node, traversedAbsolutePathDirectory.nodesInsideDirectory());
+      if (fileSystemNode === undefined) {
+        return undefined;
+      }
+
+      if (fileSystemNode instanceof SymbolicLinkToDirectory) {
+        traversedAbsolutePath = fileSystemNode.pointsTo();
+      } else {
+        traversedAbsolutePath = traversedAbsolutePath.resolve(new Path(node));
+      }
+    }
+
+    if (!this.fileSystemNodes.has(traversedAbsolutePath.toString())) {
+      return undefined;
+    }
+
+    return traversedAbsolutePath;
+  }
+
+  public getNode(absolutePath: AbsolutePath): FileSystemNode {
+    const existingPathWithoutSymbolicLinks = this.determineExistingPathWithoutSymbolicLinks(absolutePath);
+    if (existingPathWithoutSymbolicLinks === undefined) {
+      return undefined;
+    }
+
+    return this.fileSystemNodes.get(existingPathWithoutSymbolicLinks.toString());
   }
 
   public listDirectoryNodes(absolutePath: AbsolutePath): Set<FileSystemNode> {
-    return undefined;
+    const directory = this.getNode(absolutePath);
+    return (directory instanceof Directory) ? directory.nodesInsideDirectory() : undefined;
   }
 
   public getDirectoryProperties(absolutePath: AbsolutePath): DirectoryProperties {
-    return undefined;
+    const directory = this.getNode(absolutePath);
+    return (directory instanceof Directory) ? directory.properties() : undefined;
   }
 
-  public createDirectory(absolutePath: AbsolutePath, directoryProperties: DirectoryProperties): boolean {
-    return false;
-  }
+  public createNode(parentDirectoryAbsolutePath: AbsolutePath, newNode: FileSystemNode): boolean {
+    const existingParentDirectoryPath = this.determineExistingPathWithoutSymbolicLinks(parentDirectoryAbsolutePath);
+    const parentDirectory = this.getNode(existingParentDirectoryPath);
+    if (!(parentDirectory instanceof Directory)) {
+      return false;
+    }
 
-  public createFile(absolutePath: AbsolutePath, file: InMemoryFile): boolean {
-    return false;
-  }
-
-  public createProgram(absolutePath: AbsolutePath, program: ProgramFile): boolean {
-    return false;
+    // Make sure to add the node both to the parent directory and the fileSystemNodes map.
+    parentDirectory.nodesInsideDirectory().add(newNode);
+    const newDirectoryPath = existingParentDirectoryPath.resolve(new Path(newNode.name()));
+    this.fileSystemNodes.set(newDirectoryPath.toString(), newNode);
+    return true;
   }
 }

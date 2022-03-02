@@ -53,15 +53,15 @@ export class InMemoryFileSystemFacade {
     return (node instanceof ProgramFile) ? node : undefined;
   }
 
-  public createDirectory(path: string | Path, directoryProperties?: DirectoryProperties): boolean {
-    return this.inMemoryFileSystem.createDirectory(this.currentDirectoryManager.determineAbsolutePathFromPath(path), directoryProperties);
+  public createDirectory(pathParentDirectory: string | Path, directory: Directory): boolean {
+    return this.inMemoryFileSystem.createNode(this.currentDirectoryManager.determineAbsolutePathFromPath(pathParentDirectory), directory);
   }
 
   public createFile(parentDirectoryPath: string | Path, file: InMemoryFile): boolean {
-    return this.inMemoryFileSystem.createFile(this.currentDirectoryManager.determineAbsolutePathFromPath(parentDirectoryPath), file);
+    return this.inMemoryFileSystem.createNode(this.currentDirectoryManager.determineAbsolutePathFromPath(parentDirectoryPath), file);
   }
 
   public createProgram(parentDirectoryPath: string | Path, program: ProgramFile): boolean {
-    return this.inMemoryFileSystem.createProgram(this.currentDirectoryManager.determineAbsolutePathFromPath(parentDirectoryPath), program);
+    return this.inMemoryFileSystem.createNode(this.currentDirectoryManager.determineAbsolutePathFromPath(parentDirectoryPath), program);
   }
 }
