@@ -17,6 +17,10 @@ export class PresentWorkingDirectory implements CommandParser {
   }
 
   public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
+    if (parsedArgs.flags.has('P')) {
+      return {response: this.fileSystem.currentDirectoryWithoutSymbolicLinks().toString()};
+    }
+
     return {response: this.fileSystem.currentDirectory().toString()};
   }
 }

@@ -25,7 +25,7 @@ export class InMemoryFileSystem {
   }
 
   /** Traverses the nodes and determines the path without symbolic links. If the path does not exist, return undefined. */
-  private determineExistingPathWithoutSymbolicLinks(absolutePath: AbsolutePath): AbsolutePath {
+  public determineExistingPathWithoutSymbolicLinks(absolutePath: AbsolutePath): AbsolutePath {
     // Anything without symlinks can be returned directly. Besides performance, this makes sure that root also returns the right value.
     if (this.fileSystemNodes.has(absolutePath.toString())) {
       return absolutePath;
