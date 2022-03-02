@@ -69,12 +69,18 @@ export class InMemoryFileSystem {
   }
 
   public listDirectoryNodes(absolutePath: AbsolutePath): Set<FileSystemNode> {
-    const directory = this.getNode(absolutePath);
+    let directory = this.getNode(absolutePath);
+    if (directory instanceof SymbolicLinkToDirectory) {
+      directory = this.getNode(directory.pointsTo());
+    }
     return (directory instanceof Directory) ? directory.nodesInsideDirectory() : undefined;
   }
 
   public getDirectoryProperties(absolutePath: AbsolutePath): DirectoryProperties {
-    const directory = this.getNode(absolutePath);
+    let directory = this.getNode(absolutePath);
+    if (directory instanceof SymbolicLinkToDirectory) {
+      directory = this.getNode(directory.pointsTo());
+    }
     return (directory instanceof Directory) ? directory.properties() : undefined;
   }
 
