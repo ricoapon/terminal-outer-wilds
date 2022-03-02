@@ -120,4 +120,13 @@ export class InMemoryFileSystem {
     this.fileSystemNodes.set(pathToNewParentDirectory.resolve(file.name()).toString(), file);
     return true;
   }
+
+  public findPathOfNode(nodeToFind: FileSystemNode): AbsolutePath {
+    for (const [path, node] of this.fileSystemNodes) {
+      if (nodeToFind === node) {
+        return AbsolutePath.root().resolve(path.substr(1));
+      }
+    }
+    return undefined;
+  }
 }

@@ -68,4 +68,13 @@ describe('InMemoryFileSystemFacade', () => {
     expect(fileSystem.getNode('/dir1/program1').name()).toEqual('program1');
     expect(fileSystem.getNode('/dir2/program1')).toEqual(undefined);
   });
+
+  it('findPathOfNode() works', () => {
+    const fileSystem = new InMemoryFileSystemFacade();
+    const file1 = new InMemoryFile('file1.txt', 'Asset1');
+    expect(fileSystem.createNode('/', new Directory('dir1'))).toEqual(true);
+    expect(fileSystem.createNode('/dir1', new Directory('dir2'))).toEqual(true);
+    expect(fileSystem.createNode(('/dir1/dir2'), file1));
+    expect(fileSystem.findPathOfNode(file1).toString()).toEqual('/dir1/dir2/file1.txt');
+  });
 });

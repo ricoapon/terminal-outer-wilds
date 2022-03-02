@@ -59,4 +59,8 @@ export class InMemoryFileSystemFacade {
     const absolutePathToNewParentDirectory = this.currentDirectoryManager.determineAbsolutePathFromPath(pathToNewParentDirectory);
     return this.inMemoryFileSystem.moveFileOrProgram(absolutePathToFile, absolutePathToNewParentDirectory);
   }
+
+  public findPathOfNode(node: FileSystemNode): AbsolutePath {
+    return this.inMemoryFileSystem.findPathOfNode(node);
+  }
 }
