@@ -1,5 +1,4 @@
 import {AbsolutePath, Path} from './paths';
-import {InMemoryFileSystemFacade} from './in-memory-file-system-facade';
 
 /**
  * Responsible for keeping track of the current directory. This class is also used to resolve paths to an absolute path relative to the
@@ -8,10 +7,10 @@ import {InMemoryFileSystemFacade} from './in-memory-file-system-facade';
 export class CurrentDirectoryManager {
   private currentPath: AbsolutePath = AbsolutePath.root();
 
-  private readonly inMemoryFileSystemFacade: InMemoryFileSystemFacade;
+  private readonly checkIfPathExists: (path: Path) => boolean;
 
-  constructor(inMemoryFileSystemFacade: InMemoryFileSystemFacade) {
-    this.inMemoryFileSystemFacade = inMemoryFileSystemFacade;
+  constructor(checkIfPathExists: (path: AbsolutePath) => boolean) {
+    this.checkIfPathExists = checkIfPathExists;
   }
 
   public currentDirectory(): AbsolutePath {
@@ -19,12 +18,8 @@ export class CurrentDirectoryManager {
   }
 
   public changeCurrentDirectory(path: string | Path): boolean {
-    if (!(path instanceof Path)) {
-      path = new Path(path);
-    }
-
-    const newPath = this.currentPath.resolve(path);
-    if (this.inMemoryFileSystemFacade.getNode(path) === undefined) {
+    const newPath = this.determineAbsolutePathFromPath(path);
+    if (!this.checkIfPathExists(newPath)) {
       return false;
     }
 

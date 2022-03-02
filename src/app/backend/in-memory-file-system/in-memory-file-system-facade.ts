@@ -9,12 +9,13 @@ import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFil
  */
 @Injectable({providedIn: 'root'})
 export class InMemoryFileSystemFacade {
-  private readonly currentDirectoryManager: CurrentDirectoryManager;
   private readonly inMemoryFileSystem: InMemoryFileSystem;
+  private readonly currentDirectoryManager: CurrentDirectoryManager;
 
-  constructor(currentDirectoryManager: CurrentDirectoryManager, inMemoryFileSystem: InMemoryFileSystem) {
-    this.currentDirectoryManager = currentDirectoryManager;
-    this.inMemoryFileSystem = inMemoryFileSystem;
+  constructor() {
+    this.inMemoryFileSystem = new InMemoryFileSystem();
+    this.currentDirectoryManager = new CurrentDirectoryManager(
+      (path) => this.inMemoryFileSystem.getNode(path) !== undefined);
   }
 
   public currentDirectory(): Path {
