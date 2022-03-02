@@ -16,6 +16,7 @@ import {TerminalBodyComponent} from './frontend/terminal-body/terminal-body.comp
 import {TerminalExecutedCommandsComponent} from './frontend/terminal-executed-commands/terminal-executed-commands.component';
 import {TerminalInputComponent} from './frontend/terminal-input/terminal-input.component';
 import { TerminalFullScreenComponent } from './frontend/terminal-full-screen/terminal-full-screen.component';
+import { TerminalVideoComponent } from './frontend/terminal-video/terminal-video.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { TerminalFullScreenComponent } from './frontend/terminal-full-screen/ter
     TerminalBodyComponent,
     TerminalExecutedCommandsComponent,
     TerminalInputComponent,
-    TerminalFullScreenComponent
+    TerminalFullScreenComponent,
+    TerminalVideoComponent
   ],
   imports: [
     BrowserModule,
