@@ -1,6 +1,6 @@
-import {Program} from '../../file-system-types';
-import {CommandResponse} from '../../../types/command-types';
-import {ParsedArgs} from '../../../util/command-line-argument-parser';
+import {Program} from '../../in-memory-file-system/file-system-types';
+import {CommandResponse} from '../../types/command-types';
+import {ParsedArgs} from '../../util/command-line-argument-parser';
 
 export class ShortcutNpc implements Program {
   execute(parsedArgs: ParsedArgs): CommandResponse {

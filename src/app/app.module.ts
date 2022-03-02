@@ -7,8 +7,8 @@ import {KeyboardShortcutsModule} from 'ng-keyboard-shortcuts';
 import {AutofocusDirective} from './autofocus.directive';
 import {HttpClientModule} from '@angular/common/http';
 import {CommandParserModule} from './backend/commands/command-parser.module';
-import {FileSystemInitializersModule} from './backend/file-system/initializers/file-system-initializers.module';
 import {AssetReader} from './backend/asset-reader';
+import {LevelDesignersModule} from './backend/level-design/level-designers.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import {AssetReader} from './backend/asset-reader';
     KeyboardShortcutsModule.forRoot(),
     HttpClientModule,
     CommandParserModule,
-    FileSystemInitializersModule
+    LevelDesignersModule
   ],
   providers: [
     {provide: APP_INITIALIZER, useFactory: initializeAssetReader, deps: [AssetReader], multi: true}

@@ -1,20 +1,25 @@
 import {CommandResponse} from '../types/command-types';
-import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
-import {Directory, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from '../file-system/file-system-types';
 import {ParsedArgs} from '../util/command-line-argument-parser';
 import {Injectable} from '@angular/core';
 import {CommandParser} from './command-parser';
+import {InMemoryFileSystemFacade} from '../in-memory-file-system/in-memory-file-system-facade';
+import {Directory, FileSystemNode, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from '../in-memory-file-system/file-system-types';
 
 @Injectable()
 export class ListDirectories implements CommandParser {
-  private readonly fileSystem: InMemoryFileSystem;
+  private readonly fileSystem: InMemoryFileSystemFacade;
 
-  constructor(fileSystem: InMemoryFileSystem) {
+  constructor(fileSystem: InMemoryFileSystemFacade) {
     this.fileSystem = fileSystem;
   }
 
   mainCommand(): string {
     return 'ls';
+  }
+
+  // noinspection JSMethodCanBeStatic
+  private isDirectory(node: FileSystemNode): boolean {
+    return node instanceof Directory || node instanceof SymbolicLinkToDirectory;
   }
 
   public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
@@ -24,11 +29,14 @@ export class ListDirectories implements CommandParser {
       return {response: 'This directory is empty'};
     }
 
-    // Sort such that directories go first, then files. Then sort alphabetically.
-    const sortedFileSystemNodes = Array.of(...fileSystemNodes).sort((a, b) => {
-      if (a.isDirectory() && !b.isDirectory()) {
+    const sortedFileSystemNodes = Array.of(...fileSystemNodes)
+      // Filter invisible directories.
+      .filter(node => !(node instanceof Directory && node.properties().isInvisible()))
+      // Sort such that directories/symlinks go first, then files. Then sort alphabetically.
+      .sort((a, b) => {
+      if (this.isDirectory(a) && !this.isDirectory(b)) {
         return -1;
-      } else if (!a.isDirectory() && b.isDirectory()) {
+      } else if (!this.isDirectory(a) && this.isDirectory(b)) {
         return 1;
       }
       if (a.name() > b.name()) {
