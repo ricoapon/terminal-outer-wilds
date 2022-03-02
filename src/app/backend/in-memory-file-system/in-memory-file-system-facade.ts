@@ -2,7 +2,7 @@ import {CurrentDirectoryManager} from './current-directory-manager';
 import {InMemoryFileSystem} from './in-memory-file-system';
 import {AbsolutePath, Path} from './paths';
 import {Injectable} from '@angular/core';
-import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFile} from './file-system-types';
+import {DirectoryProperties, FileSystemNode} from './file-system-types';
 
 /**
  * The entry point for all file system related actions.
@@ -36,21 +36,6 @@ export class InMemoryFileSystemFacade {
 
   public getNode(path: string | Path): FileSystemNode {
     return this.inMemoryFileSystem.getNode(this.currentDirectoryManager.determineAbsolutePathFromPath(path));
-  }
-
-  public getDirectory(path: string | Path): Directory {
-    const node = this.getNode(path);
-    return (node instanceof Directory) ? node : undefined;
-  }
-
-  public getFile(path: string | Path): InMemoryFile {
-    const node = this.getNode(path);
-    return (node instanceof InMemoryFile) ? node : undefined;
-  }
-
-  public getProgram(path: string | Path): ProgramFile {
-    const node = this.getNode(path);
-    return (node instanceof ProgramFile) ? node : undefined;
   }
 
   public createNode(pathParentDirectory: string | Path, node: FileSystemNode): boolean {
