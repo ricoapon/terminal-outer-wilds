@@ -2,13 +2,8 @@ import {AbsolutePath} from './paths';
 import {ParsedArgs} from '../util/command-line-argument-parser';
 import {CommandResponse} from '../types/command-types';
 
-export enum FileSystemNodeTypes {
-  FILE, DIRECTORY, SYMLINK_TO_DIR, PROGRAM
-}
-
 export interface FileSystemNode {
   name(): string;
-  type(): FileSystemNodeTypes;
 }
 
 export class InMemoryFile implements FileSystemNode {
@@ -22,10 +17,6 @@ export class InMemoryFile implements FileSystemNode {
 
   name(): string {
     return this._name;
-  }
-
-  type(): FileSystemNodeTypes {
-    return FileSystemNodeTypes.FILE;
   }
 
   assetUrl(): string {
@@ -70,10 +61,6 @@ export class Directory implements FileSystemNode {
     return this._name;
   }
 
-  type(): FileSystemNodeTypes {
-    return FileSystemNodeTypes.DIRECTORY;
-  }
-
   properties(): DirectoryProperties {
     return this.directoryProperties;
   }
@@ -96,10 +83,6 @@ export class SymbolicLinkToDirectory implements FileSystemNode {
     return this._name;
   }
 
-  type(): FileSystemNodeTypes {
-    return FileSystemNodeTypes.SYMLINK_TO_DIR;
-  }
-
   /** Returns the path of the directory that the symbolic link points to. */
   pointsTo(): AbsolutePath {
     return this._pointsTo;
@@ -117,10 +100,6 @@ export class ProgramFile implements FileSystemNode {
 
   name(): string {
     return this._name;
-  }
-
-  type(): FileSystemNodeTypes {
-    return FileSystemNodeTypes.PROGRAM;
   }
 
   program(): Program {
