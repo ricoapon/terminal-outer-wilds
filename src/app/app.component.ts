@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {Controller} from './backend/controller';
 import {CommandResponse, InputCommand} from './backend/types/command-types';
 import {ShortcutInput} from 'ng-keyboard-shortcuts';
@@ -14,7 +14,7 @@ export type Line = {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, AfterViewChecked {
   readonly lines: Line[] = [{
     response:
       '   ____    _    _   _______   ______   _____     __          __  _____   _        _____     _____ \n' +
@@ -33,6 +33,7 @@ export class AppComponent implements AfterViewInit {
   fullScreen = false;
   fullScreenText: string;
   shortcuts: ShortcutInput[] = [];
+  @ViewChild('scrollMe') scrollMe: ElementRef;
 
   constructor(private readonly controller: Controller) {
   }
@@ -73,5 +74,9 @@ export class AppComponent implements AfterViewInit {
         preventDefault: true
       },
     );
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollMe.nativeElement.scrollTop = this.scrollMe.nativeElement.scrollHeight;
   }
 }

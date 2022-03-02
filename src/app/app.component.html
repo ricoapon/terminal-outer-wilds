@@ -15,7 +15,7 @@
     </section>
 
     <!-- Terminal Body -->
-    <section id="terminal__body" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+    <section id="terminal__body" #scrollMe>
       <div *ngIf="!fullScreen" id="terminal__prompt">
 
         <div *ngFor="let line of lines">
