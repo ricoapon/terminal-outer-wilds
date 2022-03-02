@@ -29,8 +29,11 @@ export class ListDirectories implements CommandParser {
       return {response: 'This directory is empty'};
     }
 
-    // Sort such that directories go first, then files. Then sort alphabetically.
-    const sortedFileSystemNodes = Array.of(...fileSystemNodes).sort((a, b) => {
+    const sortedFileSystemNodes = Array.of(...fileSystemNodes)
+      // Filter invisible directories.
+      .filter(node => !(node instanceof Directory && node.properties().isInvisible()))
+      // Sort such that directories/symlinks go first, then files. Then sort alphabetically.
+      .sort((a, b) => {
       if (this.isDirectory(a) && !this.isDirectory(b)) {
         return -1;
       } else if (!this.isDirectory(a) && this.isDirectory(b)) {
