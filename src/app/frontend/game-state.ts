@@ -11,6 +11,8 @@ export class GameState {
   public backgroundColor = 'blue';
   public fullScreen = false;
   public fullScreenText = '';
+  public showVideo = false;
+  public showVideoLines = [];
 
   readonly lines: Line[] = [{
     response:

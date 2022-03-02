@@ -1,14 +1,9 @@
 import {AbsolutePath} from './paths';
 import {ParsedArgs} from '../util/command-line-argument-parser';
-import {CommandResponse} from '../types/command-types';
-
-export enum FileSystemNodeTypes {
-  FILE, DIRECTORY, SYMLINK_TO_DIR, PROGRAM
-}
+import {CommandResponse, VideoLine} from '../types/command-types';
 
 export interface FileSystemNode {
   name(): string;
-  type(): FileSystemNodeTypes;
 }
 
 export class InMemoryFile implements FileSystemNode {
@@ -22,10 +17,6 @@ export class InMemoryFile implements FileSystemNode {
 
   name(): string {
     return this._name;
-  }
-
-  type(): FileSystemNodeTypes {
-    return FileSystemNodeTypes.FILE;
   }
 
   assetUrl(): string {
@@ -70,10 +61,6 @@ export class Directory implements FileSystemNode {
     return this._name;
   }
 
-  type(): FileSystemNodeTypes {
-    return FileSystemNodeTypes.DIRECTORY;
-  }
-
   properties(): DirectoryProperties {
     return this.directoryProperties;
   }
@@ -96,10 +83,6 @@ export class SymbolicLinkToDirectory implements FileSystemNode {
     return this._name;
   }
 
-  type(): FileSystemNodeTypes {
-    return FileSystemNodeTypes.SYMLINK_TO_DIR;
-  }
-
   /** Returns the path of the directory that the symbolic link points to. */
   pointsTo(): AbsolutePath {
     return this._pointsTo;
@@ -119,10 +102,6 @@ export class ProgramFile implements FileSystemNode {
     return this._name;
   }
 
-  type(): FileSystemNodeTypes {
-    return FileSystemNodeTypes.PROGRAM;
-  }
-
   program(): Program {
     return this._program;
   }
@@ -130,4 +109,22 @@ export class ProgramFile implements FileSystemNode {
 
 export interface Program {
   execute(parsedArgs: ParsedArgs): CommandResponse;
+}
+
+export class VideoFile implements FileSystemNode {
+  private readonly _name: string;
+  private readonly _videoLines: VideoLine[];
+
+  constructor(name: string, videoLines: VideoLine[]) {
+    this._name = name;
+    this._videoLines = videoLines;
+  }
+
+  name(): string {
+    return this._name;
+  }
+
+  videoLines(): VideoLine[] {
+    return this._videoLines;
+  }
 }

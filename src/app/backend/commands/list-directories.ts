@@ -3,7 +3,14 @@ import {ParsedArgs} from '../util/command-line-argument-parser';
 import {Injectable} from '@angular/core';
 import {CommandParser} from './command-parser';
 import {InMemoryFileSystemFacade} from '../in-memory-file-system/in-memory-file-system-facade';
-import {Directory, FileSystemNode, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from '../in-memory-file-system/file-system-types';
+import {
+  Directory,
+  FileSystemNode,
+  InMemoryFile,
+  ProgramFile,
+  SymbolicLinkToDirectory,
+  VideoFile
+} from '../in-memory-file-system/file-system-types';
 
 @Injectable()
 export class ListDirectories implements CommandParser {
@@ -55,6 +62,8 @@ export class ListDirectories implements CommandParser {
         output += 'f';
       } else if (fileSystemNode instanceof ProgramFile) {
         output += 'p';
+      } else if (fileSystemNode instanceof VideoFile) {
+        output += 'v';
       } else {
         output += '?';
       }

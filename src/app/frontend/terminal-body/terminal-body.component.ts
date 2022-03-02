@@ -27,5 +27,7 @@ export class TerminalBodyComponent implements AfterViewInit {
   quitFullScreen(): void {
     this.gameState.fullScreen = false;
     this.gameState.fullScreenText = '';
+    this.gameState.showVideo = false;
+    this.gameState.showVideoLines = [];
   }
 }

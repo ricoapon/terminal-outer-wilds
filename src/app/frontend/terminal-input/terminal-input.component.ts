@@ -22,11 +22,15 @@ export class TerminalInputComponent implements OnInit {
     const commandInput: InputCommand = {location: this.location, command: this.input};
     const commandResponse: CommandResponse = this.controller.parseCommand(commandInput);
     this.gameState.lines.push({location: commandInput.location, command: commandInput.command});
-    if (!commandResponse.fullScreen) {
+    if (!commandResponse.fullScreen && !commandResponse.videoLines) {
       this.gameState.lines.push({response: commandResponse.response});
-    } else {
+    } else if (commandResponse.fullScreen) {
       this.gameState.fullScreen = true;
       this.gameState.fullScreenText = commandResponse.response;
+    } else if (commandResponse.videoLines) {
+      this.gameState.fullScreen = true;
+      this.gameState.showVideo = true;
+      this.gameState.showVideoLines = commandResponse.videoLines;
     }
     this.input = '';
 
