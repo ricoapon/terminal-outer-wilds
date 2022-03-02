@@ -11,6 +11,10 @@ export class KingdomFarFarAway implements LevelDesigner {
     return 'kingdom-far-far-away';
   }
 
+  directoryPropertiesInsideRoot(): DirectoryProperties {
+    return new DirectoryProperties('purple');
+  }
+
   design(startingPath: AbsolutePath, fileSystem: InMemoryFileSystemFacade): void {
     let farFarAwayPath = startingPath;
 

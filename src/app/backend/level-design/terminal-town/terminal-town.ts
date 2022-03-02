@@ -4,7 +4,13 @@ import {LevelDesigner} from '../level-designer';
 import {Injectable} from '@angular/core';
 import {InMemoryFileSystemFacade} from '../../in-memory-file-system/in-memory-file-system-facade';
 import {AbsolutePath} from '../../in-memory-file-system/paths';
-import {Directory, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from '../../in-memory-file-system/file-system-types';
+import {
+  Directory,
+  DirectoryProperties,
+  InMemoryFile,
+  ProgramFile,
+  SymbolicLinkToDirectory
+} from '../../in-memory-file-system/file-system-types';
 import {BitcoinMiner} from './bitcoin-miner';
 import {Hasher} from './hasher';
 import {Wallet} from './wallet';
@@ -13,6 +19,10 @@ import {Wallet} from './wallet';
 export class TerminalTown implements LevelDesigner {
   directoryNameInsideRoot(): string {
     return 'terminal-town';
+  }
+
+  directoryPropertiesInsideRoot(): DirectoryProperties {
+    return new DirectoryProperties('green');
   }
 
   design(startingPath: AbsolutePath, fileSystem: InMemoryFileSystemFacade): void {

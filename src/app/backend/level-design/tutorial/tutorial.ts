@@ -1,5 +1,5 @@
 import {AbsolutePath} from '../../in-memory-file-system/paths';
-import {Directory, InMemoryFile, ProgramFile} from '../../in-memory-file-system/file-system-types';
+import {Directory, DirectoryProperties, InMemoryFile, ProgramFile} from '../../in-memory-file-system/file-system-types';
 import {Injectable} from '@angular/core';
 import {InMemoryFileSystemFacade} from '../../in-memory-file-system/in-memory-file-system-facade';
 import {LevelDesigner} from '../level-designer';
@@ -9,6 +9,10 @@ import {TutorialNpc} from './tutorial-npc';
 export class Tutorial implements LevelDesigner {
   directoryNameInsideRoot(): string {
     return 'tutorial';
+  }
+
+  directoryPropertiesInsideRoot(): DirectoryProperties {
+    return new DirectoryProperties();
   }
 
   design(startingPath: AbsolutePath, fileSystem: InMemoryFileSystemFacade): void {

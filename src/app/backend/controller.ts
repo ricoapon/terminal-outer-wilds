@@ -22,7 +22,8 @@ export class Controller {
               private fileSystem: InMemoryFileSystemFacade,
               @Inject(LEVEL_DESIGNERS) levelDesigners: LevelDesigner[]) {
     for (const levelDesigner of levelDesigners) {
-      this.fileSystem.createNode(AbsolutePath.root(), new Directory(levelDesigner.directoryNameInsideRoot()));
+      this.fileSystem.createNode(AbsolutePath.root(), new Directory(levelDesigner.directoryNameInsideRoot(),
+        levelDesigner.directoryPropertiesInsideRoot()));
       levelDesigner.design(AbsolutePath.root().resolve(levelDesigner.directoryNameInsideRoot()), this.fileSystem);
     }
 
