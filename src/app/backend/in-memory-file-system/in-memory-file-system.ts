@@ -1,5 +1,5 @@
 import {AbsolutePath} from './paths';
-import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, SymbolicLinkToDirectory} from './file-system-types';
+import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from './file-system-types';
 
 /**
  * The class that keeps track of the actual file system.
@@ -98,9 +98,9 @@ export class InMemoryFileSystem {
     return true;
   }
 
-  public moveFile(pathToFile: AbsolutePath, pathToNewParentDirectory: AbsolutePath): boolean {
+  public moveFileOrProgram(pathToFile: AbsolutePath, pathToNewParentDirectory: AbsolutePath): boolean {
     const file = this.getNode(pathToFile);
-    if (!(file instanceof InMemoryFile)) {
+    if (!(file instanceof InMemoryFile) && !(file instanceof ProgramFile)) {
       return false;
     }
 

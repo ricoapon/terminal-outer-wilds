@@ -57,6 +57,6 @@ export class InMemoryFileSystemFacade {
   public moveFile(pathToFile: string | Path, pathToNewParentDirectory: string | Path): boolean {
     const absolutePathToFile = this.currentDirectoryManager.determineAbsolutePathFromPath(pathToFile);
     const absolutePathToNewParentDirectory = this.currentDirectoryManager.determineAbsolutePathFromPath(pathToNewParentDirectory);
-    return this.inMemoryFileSystem.moveFile(absolutePathToFile, absolutePathToNewParentDirectory);
+    return this.inMemoryFileSystem.moveFileOrProgram(absolutePathToFile, absolutePathToNewParentDirectory);
   }
 }
