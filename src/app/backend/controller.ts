@@ -7,7 +7,7 @@ import {CommandParser} from './commands/command-parser';
 import {InMemoryFileSystemFacade} from './in-memory-file-system/in-memory-file-system-facade';
 import {LEVEL_DESIGNERS} from './level-design/level-designers.module';
 import {LevelDesigner} from './level-design/level-designer';
-import {AbsolutePath, Path} from './in-memory-file-system/paths';
+import {AbsolutePath} from './in-memory-file-system/paths';
 import {Directory} from './in-memory-file-system/file-system-types';
 
 /**
@@ -23,7 +23,7 @@ export class Controller {
               @Inject(LEVEL_DESIGNERS) levelDesigners: LevelDesigner[]) {
     for (const levelDesigner of levelDesigners) {
       this.fileSystem.createNode(AbsolutePath.root(), new Directory(levelDesigner.directoryNameInsideRoot()));
-      levelDesigner.design(AbsolutePath.root().resolve(new Path(levelDesigner.directoryNameInsideRoot())), this.fileSystem);
+      levelDesigner.design(AbsolutePath.root().resolve(levelDesigner.directoryNameInsideRoot()), this.fileSystem);
     }
 
     // We want to start in the tutorial directory.

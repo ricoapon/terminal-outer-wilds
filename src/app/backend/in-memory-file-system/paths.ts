@@ -37,7 +37,11 @@ export class AbsolutePath extends Path {
     return this.pathAsString.substr(this.pathAsString.lastIndexOf('/') + 1);
   }
 
-  public resolve(path: Path): AbsolutePath {
+  public resolve(path: string | Path): AbsolutePath {
+    if (!(path instanceof Path)) {
+      path = new Path(path);
+    }
+
     if (path.toString().startsWith('/')) {
       throw new Error('Cannot resolve with an absolute path ' + path);
     }

@@ -13,7 +13,7 @@ describe('Path', () => {
 
 describe('AbsolutePath', () => {
   function resolvePath(path: string): AbsolutePath {
-    return AbsolutePath.root().resolve(new Path(path));
+    return AbsolutePath.root().resolve(path);
   }
 
   it('name() works', () => {

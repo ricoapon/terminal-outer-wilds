@@ -34,7 +34,7 @@ export class CurrentDirectoryManager {
 
     // Absolute paths don't need to be resolved.
     if (path.toString().startsWith('/')) {
-      return AbsolutePath.root().resolve(new Path(path.toString().substr(1)));
+      return AbsolutePath.root().resolve(path.toString().substr(1));
     }
 
     return this.currentPath.resolve(path);

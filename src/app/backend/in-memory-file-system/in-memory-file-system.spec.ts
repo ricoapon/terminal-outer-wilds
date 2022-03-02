@@ -1,10 +1,10 @@
 import {InMemoryFileSystem} from './in-memory-file-system';
-import {AbsolutePath, Path} from './paths';
+import {AbsolutePath} from './paths';
 import {Directory, InMemoryFile} from './file-system-types';
 
 describe('InMemoryFileSystem', () => {
   function createAbsolutePath(path: string): AbsolutePath {
-    return AbsolutePath.root().resolve(new Path(path));
+    return AbsolutePath.root().resolve(path);
   }
   it('happy flow', () => {
     const fileSystem = new InMemoryFileSystem();

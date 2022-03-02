@@ -1,4 +1,4 @@
-import {AbsolutePath, Path} from './paths';
+import {AbsolutePath} from './paths';
 import {Directory, DirectoryProperties, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
 
 /**
@@ -48,7 +48,7 @@ export class InMemoryFileSystem {
       if (fileSystemNode instanceof SymbolicLinkToDirectory) {
         traversedAbsolutePath = fileSystemNode.pointsTo();
       } else {
-        traversedAbsolutePath = traversedAbsolutePath.resolve(new Path(node));
+        traversedAbsolutePath = traversedAbsolutePath.resolve(node);
       }
     }
 
@@ -87,7 +87,7 @@ export class InMemoryFileSystem {
 
     // Make sure to add the node both to the parent directory and the fileSystemNodes map.
     parentDirectory.nodesInsideDirectory().add(newNode);
-    const newDirectoryPath = existingParentDirectoryPath.resolve(new Path(newNode.name()));
+    const newDirectoryPath = existingParentDirectoryPath.resolve(newNode.name());
     this.fileSystemNodes.set(newDirectoryPath.toString(), newNode);
     return true;
   }
