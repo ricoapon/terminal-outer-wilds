@@ -1,6 +1,6 @@
 import {AbsolutePath} from './paths';
 import {ParsedArgs} from '../util/command-line-argument-parser';
-import {CommandResponse} from '../types/command-types';
+import {CommandResponse, VideoLine} from '../types/command-types';
 
 export interface FileSystemNode {
   name(): string;
@@ -109,4 +109,22 @@ export class ProgramFile implements FileSystemNode {
 
 export interface Program {
   execute(parsedArgs: ParsedArgs): CommandResponse;
+}
+
+export class VideoFile implements FileSystemNode {
+  private readonly _name: string;
+  private readonly _videoLines: VideoLine[];
+
+  constructor(name: string, videoLines: VideoLine[]) {
+    this._name = name;
+    this._videoLines = videoLines;
+  }
+
+  name(): string {
+    return this._name;
+  }
+
+  videoLines(): VideoLine[] {
+    return this._videoLines;
+  }
 }
