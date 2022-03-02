@@ -39,7 +39,7 @@ export class AbsolutePath extends Path {
 
   public resolve(path: Path): AbsolutePath {
     if (path.toString().startsWith('/')) {
-      throw new Error('Cannot resolve with an absolute path');
+      throw new Error('Cannot resolve with an absolute path ' + path);
     }
 
     // The path can contain '.' as current directory and '..' and parent directory. These cannot be contained in the result, so we need to
