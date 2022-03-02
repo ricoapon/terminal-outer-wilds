@@ -1,8 +1,8 @@
-import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFile} from '../file-system/file-system-types';
 import {CurrentDirectoryManager} from './current-directory-manager';
 import {InMemoryFileSystem} from './in-memory-file-system';
 import {Path} from './paths';
 import {Injectable} from '@angular/core';
+import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFile} from './file-system-types';
 
 /**
  * The entry point for all file system related actions.

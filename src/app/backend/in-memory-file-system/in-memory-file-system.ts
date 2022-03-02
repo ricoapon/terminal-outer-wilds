@@ -1,5 +1,5 @@
 import {AbsolutePath} from './paths';
-import {DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFile} from '../file-system/file-system-types';
+import {DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFile} from './file-system-types';
 
 /**
  * The class that keeps track of the actual file system.
