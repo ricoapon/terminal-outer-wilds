@@ -9,6 +9,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {CommandParserModule} from './backend/commands/command-parser.module';
 import {AssetReader} from './backend/asset-reader';
 import {LevelDesignersModule} from './backend/level-design/level-designers.module';
+import {InMemoryFileSystemFacade} from './backend/in-memory-file-system/in-memory-file-system-facade';
+import {LevelDesignBootstrap} from './backend/level-design/level-designer-bootstrap';
 
 @NgModule({
   declarations: [
@@ -24,15 +26,27 @@ import {LevelDesignersModule} from './backend/level-design/level-designers.modul
     LevelDesignersModule
   ],
   providers: [
-    {provide: APP_INITIALIZER, useFactory: initializeAssetReader, deps: [AssetReader], multi: true}
+    {provide: APP_INITIALIZER, useFactory: initializeAssetReader, deps: [AssetReader], multi: true},
+    {provide: APP_INITIALIZER, useFactory: initializeFileSystemWithLevelDesigners,
+      deps: [LevelDesignBootstrap, InMemoryFileSystemFacade], multi: true},
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
 }
 
-export function initializeAssetReader(assetReader: AssetReader): () => Promise<any> {
+function initializeAssetReader(assetReader: AssetReader): () => Promise<any> {
   return (): Promise<void> => {
     return assetReader.initialize();
+  };
+}
+
+function initializeFileSystemWithLevelDesigners(levelDesignerBootstrap: LevelDesignBootstrap,
+                                                fileSystem: InMemoryFileSystemFacade): () => Promise<any> {
+  return (): Promise<void> => {
+    return new Promise<void>((resolve) => {
+      levelDesignerBootstrap.design(fileSystem);
+      resolve();
+    });
   };
 }
