@@ -1,15 +1,15 @@
 import {CommandResponse} from '../types/command-types';
-import {InMemoryFileSystem} from '../file-system/in-memory-file-system';
-import {Directory, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from '../file-system/file-system-types';
 import {ParsedArgs} from '../util/command-line-argument-parser';
 import {Injectable} from '@angular/core';
 import {CommandParser} from './command-parser';
+import {InMemoryFileSystemFacade} from '../in-memory-file-system/in-memory-file-system-facade';
+import {Directory, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from '../in-memory-file-system/file-system-types';
 
 @Injectable()
 export class ListDirectories implements CommandParser {
-  private readonly fileSystem: InMemoryFileSystem;
+  private readonly fileSystem: InMemoryFileSystemFacade;
 
-  constructor(fileSystem: InMemoryFileSystem) {
+  constructor(fileSystem: InMemoryFileSystemFacade) {
     this.fileSystem = fileSystem;
   }
 
@@ -26,9 +26,9 @@ export class ListDirectories implements CommandParser {
 
     // Sort such that directories go first, then files. Then sort alphabetically.
     const sortedFileSystemNodes = Array.of(...fileSystemNodes).sort((a, b) => {
-      if (a.isDirectory() && !b.isDirectory()) {
+      if (a instanceof Directory && !(b instanceof Directory)) {
         return -1;
-      } else if (!a.isDirectory() && b.isDirectory()) {
+      } else if (!(a instanceof Directory) && (b instanceof Directory)) {
         return 1;
       }
       if (a.name() > b.name()) {

@@ -1,9 +1,9 @@
-import {LevelDesigner, resolvePath} from '../level-design-bootstrap';
 import {AbsolutePath} from '../../in-memory-file-system/paths';
 import {Directory, InMemoryFile, ProgramFile} from '../../in-memory-file-system/file-system-types';
-import {TutorialNpc} from '../../file-system/initializers/tutorial/tutorial-npc';
 import {Injectable} from '@angular/core';
 import {InMemoryFileSystemFacade} from '../../in-memory-file-system/in-memory-file-system-facade';
+import {LevelDesigner, resolvePath} from '../level-designer';
+import {TutorialNpc} from './tutorial-npc';
 
 @Injectable()
 export class Tutorial implements LevelDesigner {

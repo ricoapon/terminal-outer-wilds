@@ -1,6 +1,6 @@
 import {InjectionToken, NgModule} from '@angular/core';
-import {LevelDesigner} from './level-design-bootstrap';
 import {Tutorial} from './tutorial/tutorial';
+import {LevelDesigner} from './level-designer';
 
 export const LEVEL_DESIGNERS = new InjectionToken<LevelDesigner>('LevelDesigner');
 
