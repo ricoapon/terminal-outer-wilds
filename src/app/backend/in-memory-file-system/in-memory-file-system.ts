@@ -1,5 +1,5 @@
 import {AbsolutePath} from './paths';
-import {Directory, DirectoryProperties, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
+import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, SymbolicLinkToDirectory} from './file-system-types';
 
 /**
  * The class that keeps track of the actual file system.
@@ -95,6 +95,29 @@ export class InMemoryFileSystem {
     parentDirectory.nodesInsideDirectory().add(newNode);
     const newDirectoryPath = existingParentDirectoryPath.resolve(newNode.name());
     this.fileSystemNodes.set(newDirectoryPath.toString(), newNode);
+    return true;
+  }
+
+  public moveFile(pathToFile: AbsolutePath, pathToNewParentDirectory: AbsolutePath): boolean {
+    const file = this.getNode(pathToFile);
+    if (!(file instanceof InMemoryFile)) {
+      return false;
+    }
+
+    const oldParentDirectory = this.getNode(pathToFile.resolve('..'));
+    if (!(oldParentDirectory instanceof Directory)) {
+      return false;
+    }
+
+    const newParentDirectory = this.getNode(pathToNewParentDirectory);
+    if (!(newParentDirectory instanceof Directory)) {
+      return false;
+    }
+
+    oldParentDirectory.nodesInsideDirectory().delete(file);
+    newParentDirectory.nodesInsideDirectory().add(file);
+    this.fileSystemNodes.delete(pathToFile.toString());
+    this.fileSystemNodes.set(pathToNewParentDirectory.resolve(file.name()).toString(), file);
     return true;
   }
 }

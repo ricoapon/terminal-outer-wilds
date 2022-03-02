@@ -54,4 +54,14 @@ describe('InMemoryFileSystemFacade', () => {
     expect(fileSystem.currentDirectoryWithoutSymbolicLinks().toString()).toEqual('/dir2/dir4');
   });
 
+  it('move() works', () => {
+    const fileSystem = new InMemoryFileSystemFacade();
+    expect(fileSystem.createNode('/', new Directory('dir1'))).toEqual(true);
+    expect(fileSystem.createNode('/', new Directory('dir2'))).toEqual(true);
+    expect(fileSystem.createNode(('/dir2'), new InMemoryFile('file1.txt', 'Asset1')));
+
+    expect(fileSystem.moveFile('/dir2/file1.txt', '/dir1'));
+    expect(fileSystem.getNode('/dir1/file1.txt').name()).toEqual('file1.txt');
+    expect(fileSystem.getNode('/dir2/file1.txt')).toEqual(undefined);
+  });
 });
