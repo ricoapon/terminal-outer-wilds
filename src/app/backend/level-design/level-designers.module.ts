@@ -8,7 +8,7 @@ export const LEVEL_DESIGNERS = new InjectionToken<LevelDesigner>('LevelDesigner'
   declarations: [],
   imports: [],
   providers: [
-    {provide: LEVEL_DESIGNERS, useClass: Tutorial, multi: true},
+    {provide: LEVEL_DESIGNERS, useClass: Tutorial, multi: true}
   ],
   bootstrap: []
 })

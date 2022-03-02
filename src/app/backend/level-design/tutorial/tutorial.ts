@@ -12,12 +12,12 @@ export class Tutorial implements LevelDesigner {
   }
 
   design(startingPath: AbsolutePath, fileSystem: InMemoryFileSystemFacade): void {
-    fileSystem.createNode(resolvePath('step-1.txt', startingPath), new InMemoryFile('step-1.txt', 'tutorial/step-1.txt'));
+    fileSystem.createNode(startingPath, new InMemoryFile('step-1.txt', 'tutorial/step-1.txt'));
 
-    fileSystem.createNode(resolvePath('step-2', startingPath), new Directory('step-2'));
+    fileSystem.createNode(startingPath, new Directory('step-2'));
     startingPath = resolvePath('step-2', startingPath);
 
-    fileSystem.createNode(resolvePath('step-3.txt', startingPath), new InMemoryFile('step-3.txt', 'tutorial/step-3.txt'));
-    fileSystem.createNode(resolvePath('npc.sh', startingPath), new ProgramFile('npc.sh', new TutorialNpc()));
+    fileSystem.createNode(startingPath, new InMemoryFile('step-3.txt', 'tutorial/step-3.txt'));
+    fileSystem.createNode(startingPath, new ProgramFile('npc.sh', new TutorialNpc()));
   }
 }

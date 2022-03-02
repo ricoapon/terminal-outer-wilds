@@ -5,6 +5,10 @@ import {Inject, Injectable} from '@angular/core';
 import {COMMAND_PARSERS} from './commands/command-parser.module';
 import {CommandParser} from './commands/command-parser';
 import {InMemoryFileSystemFacade} from './in-memory-file-system/in-memory-file-system-facade';
+import {LEVEL_DESIGNERS} from './level-design/level-designers.module';
+import {LevelDesigner} from './level-design/level-designer';
+import {AbsolutePath, Path} from './in-memory-file-system/paths';
+import {Directory} from './in-memory-file-system/file-system-types';
 
 /**
  * This class is the entry point for the entire backend. Commands are inserted here.
@@ -15,7 +19,13 @@ export class Controller {
 
   constructor(private httpClient: HttpClient,
               @Inject(COMMAND_PARSERS) commandParsers: CommandParser[],
-              private fileSystem: InMemoryFileSystemFacade) {
+              private fileSystem: InMemoryFileSystemFacade,
+              @Inject(LEVEL_DESIGNERS) levelDesigners: LevelDesigner[]) {
+    for (const levelDesigner of levelDesigners) {
+      this.fileSystem.createNode(AbsolutePath.root(), new Directory(levelDesigner.directoryNameInsideRoot()));
+      levelDesigner.design(AbsolutePath.root().resolve(new Path(levelDesigner.directoryNameInsideRoot())), this.fileSystem);
+    }
+
     // We want to start in the tutorial directory.
     this.fileSystem.changeCurrentDirectory('tutorial');
     // Store the command parsers into a map to easier find each instance.
