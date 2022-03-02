@@ -15,5 +15,6 @@ describe('CurrentDirectoryManager', () => {
   it('determineAbsolutePathFromPath() works', () => {
     const manager = new CurrentDirectoryManager(() => true);
     expect(manager.determineAbsolutePathFromPath('a/b/c').toString()).toEqual('/a/b/c');
+    expect(manager.determineAbsolutePathFromPath('/a/b/c').toString()).toEqual('/a/b/c');
   });
 });
