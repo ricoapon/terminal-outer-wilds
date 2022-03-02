@@ -11,7 +11,7 @@ export class InMemoryFileSystem {
 
   constructor() {
     this.fileSystemNodes = new Map();
-    this.fileSystemNodes.set(AbsolutePath.root().toString(), new Directory(AbsolutePath.root().toString(), new Set(),
+    this.fileSystemNodes.set(AbsolutePath.root().toString(), new Directory(AbsolutePath.root().toString(),
       new DirectoryProperties('blue', false)));
   }
 

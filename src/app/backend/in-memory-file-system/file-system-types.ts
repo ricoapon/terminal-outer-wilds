@@ -37,7 +37,7 @@ export class DirectoryProperties {
   private readonly _color: string;
   private readonly _isInvisible: boolean;
 
-  constructor(color: string, isInvisible: boolean) {
+  constructor(color?: string, isInvisible?: boolean) {
     this._color = color;
     this._isInvisible = isInvisible;
   }
@@ -57,9 +57,12 @@ export class Directory implements FileSystemNode {
   private readonly nodes: Set<FileSystemNode>;
   private readonly directoryProperties: DirectoryProperties;
 
-  constructor(name: string, nodes: Set<FileSystemNode>, directoryProperties: DirectoryProperties) {
+  constructor(name: string, directoryProperties?: DirectoryProperties) {
     this._name = name;
-    this.nodes = nodes;
+    this.nodes = new Set();
+    if (directoryProperties === undefined) {
+      directoryProperties = new DirectoryProperties();
+    }
     this.directoryProperties = directoryProperties;
   }
 

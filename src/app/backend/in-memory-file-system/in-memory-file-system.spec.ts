@@ -1,16 +1,15 @@
 import {InMemoryFileSystem} from './in-memory-file-system';
 import {AbsolutePath, Path} from './paths';
-import {Directory, DirectoryProperties, InMemoryFile} from './file-system-types';
+import {Directory, InMemoryFile} from './file-system-types';
 
 describe('InMemoryFileSystem', () => {
-  const directoryProperties = new DirectoryProperties('color', false);
   function createAbsolutePath(path: string): AbsolutePath {
     return AbsolutePath.root().resolve(new Path(path));
   }
   it('happy flow', () => {
     const fileSystem = new InMemoryFileSystem();
-    expect(fileSystem.createNode(AbsolutePath.root(), new Directory('dir1', new Set(), directoryProperties))).toEqual(true);
-    expect(fileSystem.createNode(createAbsolutePath('dir1'), new Directory('dir2', new Set(), directoryProperties))).toEqual(true);
+    expect(fileSystem.createNode(AbsolutePath.root(), new Directory('dir1'))).toEqual(true);
+    expect(fileSystem.createNode(createAbsolutePath('dir1'), new Directory('dir2'))).toEqual(true);
     expect(fileSystem.createNode(AbsolutePath.root(), new InMemoryFile('file1.txt', 'Asset1'))).toEqual(true);
 
     const dir1 = fileSystem.getNode(createAbsolutePath('dir1')) as Directory;
