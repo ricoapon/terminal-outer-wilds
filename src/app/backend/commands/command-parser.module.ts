@@ -7,6 +7,7 @@ import {Manual} from './manual';
 import {PresentWorkingDirectory} from './present-working-directory';
 import {Read} from './read';
 import {CommandParser} from './command-parser';
+import {Move} from './move';
 
 export const COMMAND_PARSERS = new InjectionToken<CommandParser>('CommandParser');
 
@@ -21,6 +22,7 @@ export const COMMAND_PARSERS = new InjectionToken<CommandParser>('CommandParser'
     {provide: COMMAND_PARSERS, useClass: Manual, multi: true},
     {provide: COMMAND_PARSERS, useClass: PresentWorkingDirectory, multi: true},
     {provide: COMMAND_PARSERS, useClass: Read, multi: true},
+    {provide: COMMAND_PARSERS, useClass: Move, multi: true},
   ],
   bootstrap: []
 })

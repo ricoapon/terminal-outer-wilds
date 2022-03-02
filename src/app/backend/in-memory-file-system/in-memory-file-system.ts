@@ -1,5 +1,5 @@
 import {AbsolutePath} from './paths';
-import {Directory, DirectoryProperties, FileSystemNode, SymbolicLinkToDirectory} from './file-system-types';
+import {Directory, DirectoryProperties, FileSystemNode, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from './file-system-types';
 
 /**
  * The class that keeps track of the actual file system.
@@ -96,5 +96,37 @@ export class InMemoryFileSystem {
     const newDirectoryPath = existingParentDirectoryPath.resolve(newNode.name());
     this.fileSystemNodes.set(newDirectoryPath.toString(), newNode);
     return true;
+  }
+
+  public moveFileOrProgram(pathToFile: AbsolutePath, pathToNewParentDirectory: AbsolutePath): boolean {
+    const file = this.getNode(pathToFile);
+    if (!(file instanceof InMemoryFile) && !(file instanceof ProgramFile)) {
+      return false;
+    }
+
+    const oldParentDirectory = this.getNode(pathToFile.resolve('..'));
+    if (!(oldParentDirectory instanceof Directory)) {
+      return false;
+    }
+
+    const newParentDirectory = this.getNode(pathToNewParentDirectory);
+    if (!(newParentDirectory instanceof Directory)) {
+      return false;
+    }
+
+    oldParentDirectory.nodesInsideDirectory().delete(file);
+    newParentDirectory.nodesInsideDirectory().add(file);
+    this.fileSystemNodes.delete(pathToFile.toString());
+    this.fileSystemNodes.set(pathToNewParentDirectory.resolve(file.name()).toString(), file);
+    return true;
+  }
+
+  public findPathOfNode(nodeToFind: FileSystemNode): AbsolutePath {
+    for (const [path, node] of this.fileSystemNodes) {
+      if (nodeToFind === node) {
+        return AbsolutePath.root().resolve(path.substr(1));
+      }
+    }
+    return undefined;
   }
 }

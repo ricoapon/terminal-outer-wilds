@@ -33,10 +33,11 @@ export class TerminalTown implements LevelDesigner {
 
     fileSystem.createNode(startingPath, new Directory('mine'));
     startingPath = startingPath.resolve('mine');
+    const mineDirectory = fileSystem.getNode('/terminal-town/mine') as Directory;
     const nodesInMine = [
-      new ProgramFile('bitcoin.miner', new BitcoinMiner()),
-      new ProgramFile('SHA256', new Hasher()),
-      new ProgramFile('wallet', new Wallet()),
+      new ProgramFile('bitcoin.miner', new BitcoinMiner(fileSystem, mineDirectory, fileSystem.getNode('/tutorial') as Directory)),
+      new ProgramFile('SHA-256', new Hasher()),
+      new ProgramFile('wallet', new Wallet(fileSystem, mineDirectory)),
       new InMemoryFile('bitcoin1', null),
       new InMemoryFile('bitcoin2', null),
       new InMemoryFile('bitcoin3', null),

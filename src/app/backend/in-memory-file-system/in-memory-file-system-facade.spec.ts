@@ -1,5 +1,5 @@
 import {AbsolutePath} from './paths';
-import {Directory, InMemoryFile, SymbolicLinkToDirectory} from './file-system-types';
+import {Directory, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from './file-system-types';
 import {InMemoryFileSystemFacade} from './in-memory-file-system-facade';
 
 describe('InMemoryFileSystemFacade', () => {
@@ -54,4 +54,27 @@ describe('InMemoryFileSystemFacade', () => {
     expect(fileSystem.currentDirectoryWithoutSymbolicLinks().toString()).toEqual('/dir2/dir4');
   });
 
+  it('move() works', () => {
+    const fileSystem = new InMemoryFileSystemFacade();
+    expect(fileSystem.createNode('/', new Directory('dir1'))).toEqual(true);
+    expect(fileSystem.createNode('/', new Directory('dir2'))).toEqual(true);
+    expect(fileSystem.createNode(('/dir2'), new InMemoryFile('file1.txt', 'Asset1')));
+    expect(fileSystem.createNode(('/dir2'), new ProgramFile('program1', undefined)));
+
+    expect(fileSystem.moveFile('/dir2/file1.txt', '/dir1'));
+    expect(fileSystem.moveFile('/dir2/program1', '/dir1'));
+    expect(fileSystem.getNode('/dir1/file1.txt').name()).toEqual('file1.txt');
+    expect(fileSystem.getNode('/dir2/file1.txt')).toEqual(undefined);
+    expect(fileSystem.getNode('/dir1/program1').name()).toEqual('program1');
+    expect(fileSystem.getNode('/dir2/program1')).toEqual(undefined);
+  });
+
+  it('findPathOfNode() works', () => {
+    const fileSystem = new InMemoryFileSystemFacade();
+    const file1 = new InMemoryFile('file1.txt', 'Asset1');
+    expect(fileSystem.createNode('/', new Directory('dir1'))).toEqual(true);
+    expect(fileSystem.createNode('/dir1', new Directory('dir2'))).toEqual(true);
+    expect(fileSystem.createNode(('/dir1/dir2'), file1));
+    expect(fileSystem.findPathOfNode(file1).toString()).toEqual('/dir1/dir2/file1.txt');
+  });
 });

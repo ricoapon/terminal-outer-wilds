@@ -21,7 +21,8 @@ export class KingdomFarFarAway implements LevelDesigner {
     // Create the invisible shortcut with the city.
     fileSystem.createNode(startingPath, new Directory('shortcut', new DirectoryProperties(undefined, true)));
     startingPath = startingPath.resolve('shortcut');
-    fileSystem.createNode(startingPath, new Directory('city'));
+    const cityDir = new Directory('city');
+    fileSystem.createNode(startingPath, cityDir);
     startingPath = startingPath.resolve('city');
 
     // Create directories far/far/far/away/city where city symlinks to the actual city.
@@ -34,6 +35,6 @@ export class KingdomFarFarAway implements LevelDesigner {
     fileSystem.createNode(farFarAwayPath, new SymbolicLinkToDirectory('city', startingPath));
 
     // Create the content of the city.
-    fileSystem.createNode(startingPath, new ProgramFile('vvv', new ShortcutNpc()));
+    fileSystem.createNode(startingPath, new ProgramFile('vvv', new ShortcutNpc(fileSystem, startingPath)));
   }
 }
