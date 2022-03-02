@@ -42,7 +42,7 @@ export class DirectoryProperties {
     this._isInvisible = isInvisible;
   }
 
-  /** All possible colors can be found in app.component.css (.dynamic-bg-<color>). */
+  /** All possible colors can be found in terminal-container.component.css (.dynamic-bg-<color>). */
   color(): string {
     return this._color;
   }

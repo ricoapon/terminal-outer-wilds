@@ -1,0 +1,18 @@
+.location {
+  color: #7eda28;
+  padding-right: 8px;
+}
+
+.console-input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-family: 'Ubuntu Mono';
+  font-size: 14px;
+}

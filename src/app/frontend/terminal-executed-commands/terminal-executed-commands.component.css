@@ -1,0 +1,14 @@
+.location {
+  color: #7eda28;
+  padding-right: 8px;
+}
+
+.command {
+  color: white;
+}
+
+.response {
+  color: white;
+  white-space: pre-wrap;
+}
+

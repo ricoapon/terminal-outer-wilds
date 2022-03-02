@@ -11,11 +11,21 @@ import {AssetReader} from './backend/asset-reader';
 import {LevelDesignersModule} from './backend/level-design/level-designers.module';
 import {InMemoryFileSystemFacade} from './backend/in-memory-file-system/in-memory-file-system-facade';
 import {LevelDesignBootstrap} from './backend/level-design/level-designer-bootstrap';
+import {TerminalContainerComponent} from './frontend/terminal-container/terminal-container.component';
+import {TerminalBodyComponent} from './frontend/terminal-body/terminal-body.component';
+import {TerminalExecutedCommandsComponent} from './frontend/terminal-executed-commands/terminal-executed-commands.component';
+import {TerminalInputComponent} from './frontend/terminal-input/terminal-input.component';
+import { TerminalFullScreenComponent } from './frontend/terminal-full-screen/terminal-full-screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AutofocusDirective
+    AutofocusDirective,
+    TerminalContainerComponent,
+    TerminalBodyComponent,
+    TerminalExecutedCommandsComponent,
+    TerminalInputComponent,
+    TerminalFullScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -27,8 +37,10 @@ import {LevelDesignBootstrap} from './backend/level-design/level-designer-bootst
   ],
   providers: [
     {provide: APP_INITIALIZER, useFactory: initializeAssetReader, deps: [AssetReader], multi: true},
-    {provide: APP_INITIALIZER, useFactory: initializeFileSystemWithLevelDesigners,
-      deps: [LevelDesignBootstrap, InMemoryFileSystemFacade], multi: true},
+    {
+      provide: APP_INITIALIZER, useFactory: initializeFileSystemWithLevelDesigners,
+      deps: [LevelDesignBootstrap, InMemoryFileSystemFacade], multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
