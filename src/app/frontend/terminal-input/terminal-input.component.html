@@ -1,0 +1,5 @@
+<span class="location">[{{ location }}] ></span>
+
+<input type="text" class="console-input"
+       [(ngModel)]="input"
+       (keydown.enter)="parseCommand()" [autofocus]>

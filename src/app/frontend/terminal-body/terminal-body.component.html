@@ -1,0 +1,10 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+
+<div *ngIf="!gameState.fullScreen">
+  <app-terminal-executed-commands></app-terminal-executed-commands>
+  <app-terminal-input></app-terminal-input>
+</div>
+
+<div *ngIf="gameState.fullScreen">
+  <app-terminal-full-screen></app-terminal-full-screen>
+</div>

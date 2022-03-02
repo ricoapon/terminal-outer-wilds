@@ -1,82 +1,9 @@
-import {AfterViewChecked, AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {Controller} from './backend/controller';
-import {CommandResponse, InputCommand} from './backend/types/command-types';
-import {ShortcutInput} from 'ng-keyboard-shortcuts';
-
-export type Line = {
-  location?: string,
-  command?: string,
-  response?: string,
-};
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: `
+    <app-terminal-container></app-terminal-container>`
 })
-export class AppComponent implements AfterViewInit, AfterViewChecked {
-  readonly lines: Line[] = [{
-    response:
-      '   ____    _    _   _______   ______   _____     __          __  _____   _        _____     _____ \n' +
-      '  / __ \\  | |  | | |__   __| |  ____| |  __ \\    \\ \\        / / |_   _| | |      |  __ \\   / ____|\n' +
-      ' | |  | | | |  | |    | |    | |__    | |__) |    \\ \\  /\\  / /    | |   | |      | |  | | | (___  \n' +
-      ' | |  | | | |  | |    | |    |  __|   |  _  /      \\ \\/  \\/ /     | |   | |      | |  | |  \\___ \\ \n' +
-      ' | |__| | | |__| |    | |    | |____  | | \\ \\       \\  /\\  /     _| |_  | |____  | |__| |  ____) |\n' +
-      '  \\____/   \\____/     |_|    |______| |_|  \\_\\       \\/  \\/     |_____| |______| |_____/  |_____/ \n' +
-      '                                                                                                  \n' +
-      'Welcome to this magical server. Take a look around and enjoy yourself with the puzzles.\n' +
-      'If this is your first time playing, type \'help\' and press enter.\n\n',
-  }];
-  location = '/tutorial';
-  backgroundColor = 'blue';
-  input: string;
-  fullScreen = false;
-  fullScreenText: string;
-  shortcuts: ShortcutInput[] = [];
-  @ViewChild('scrollMe') scrollMe: ElementRef;
-
-  constructor(private readonly controller: Controller) {
-  }
-
-  parseCommand(): void {
-    const commandInput: InputCommand = {location: this.location, command: this.input};
-    const commandResponse: CommandResponse = this.controller.parseCommand(commandInput);
-    this.lines.push({location: commandInput.location, command: commandInput.command});
-    if (!commandResponse.fullScreen) {
-      this.lines.push({response: commandResponse.response});
-    } else {
-      this.fullScreen = true;
-      this.fullScreenText = commandResponse.response;
-    }
-    this.input = '';
-
-    if (commandResponse.newCurrentDirectory) {
-      this.location = commandResponse.newCurrentDirectory;
-    }
-
-    if (commandResponse.newBackgroundColor) {
-      this.backgroundColor = commandResponse.newBackgroundColor;
-    }
-  }
-
-  quitFullScreen(): void {
-    this.fullScreen = false;
-    this.fullScreenText = '';
-  }
-
-  ngAfterViewInit(): void {
-    this.shortcuts.push(
-      {
-        key: ['q'],
-        label: 'Quit full screen',
-        description: 'Q',
-        command: () => this.quitFullScreen(),
-        preventDefault: true
-      },
-    );
-  }
-
-  ngAfterViewChecked(): void {
-    this.scrollMe.nativeElement.scrollTop = this.scrollMe.nativeElement.scrollHeight;
-  }
+export class AppComponent {
 }

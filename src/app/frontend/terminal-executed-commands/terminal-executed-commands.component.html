@@ -1,0 +1,9 @@
+<div *ngFor="let line of gameState.lines">
+  <div *ngIf="line.location != null">
+    <span class="location">[{{line.location}}] ></span>
+    <span class="command">{{line.command}}</span>
+  </div>
+  <div *ngIf="line.response != null">
+    <span class="response">{{line.response}}</span>
+  </div>
+</div>
