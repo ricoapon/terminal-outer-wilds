@@ -2,6 +2,7 @@ import {AfterViewChecked, AfterViewInit, Component, ElementRef, ViewChild} from 
 import {Controller} from './backend/controller';
 import {CommandResponse, InputCommand} from './backend/types/command-types';
 import {ShortcutInput} from 'ng-keyboard-shortcuts';
+import {GameState} from './game-state';
 
 export type Line = {
   location?: string,
@@ -28,14 +29,13 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
       'If this is your first time playing, type \'help\' and press enter.\n\n',
   }];
   location = '/tutorial';
-  backgroundColor = 'blue';
   input: string;
   fullScreen = false;
   fullScreenText: string;
   shortcuts: ShortcutInput[] = [];
   @ViewChild('scrollMe') scrollMe: ElementRef;
 
-  constructor(private readonly controller: Controller) {
+  constructor(private readonly controller: Controller, public gameState: GameState) {
   }
 
   parseCommand(): void {
@@ -55,7 +55,7 @@ export class AppComponent implements AfterViewInit, AfterViewChecked {
     }
 
     if (commandResponse.newBackgroundColor) {
-      this.backgroundColor = commandResponse.newBackgroundColor;
+      this.gameState.backgroundColor = commandResponse.newBackgroundColor;
     }
   }
 
