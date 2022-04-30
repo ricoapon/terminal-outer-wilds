@@ -27,8 +27,8 @@ export class Controller {
       return {response: 'Unknown command'};
     }
     try {
-      return this.commandParserMap.get(parsedArgs.mainCommand).parseCommand(parsedArgs);
-    } catch (e) {
+      return this.commandParserMap.get(parsedArgs.mainCommand)!.parseCommand(parsedArgs);
+    } catch (e: any) {
       return {response: 'An error occurred. Please contact the administrator. \n' + e.stack};
     }
   }

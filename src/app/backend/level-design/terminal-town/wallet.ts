@@ -14,6 +14,9 @@ export class Wallet implements Program {
 
   execute(parsedArgs: ParsedArgs): CommandResponse {
     const minePath = this.fileSystem.findPathOfNode(this.mineDirectory);
+    if (minePath === undefined) {
+      throw new Error('Dont know what to do')
+    }
     const minerPath = minePath.resolve('bitcoin.miner');
     const minerExists = this.fileSystem.getNode(minerPath) !== undefined;
 

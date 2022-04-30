@@ -1,7 +1,6 @@
 import {Directive, ElementRef, Input, OnInit} from '@angular/core';
 
 @Directive({
-  // tslint:disable-next-line:directive-selector
   selector: '[autofocus]'
 })
 export class AutofocusDirective implements OnInit {
@@ -19,6 +18,6 @@ export class AutofocusDirective implements OnInit {
   }
 
   @Input() set autofocus(condition: boolean) {
-    this.focus = condition !== false;
+    this.focus = condition;
   }
 }

@@ -25,8 +25,8 @@ export class InMemoryFile implements FileSystemNode {
 }
 
 export class DirectoryProperties {
-  private readonly _color: string;
-  private readonly _isInvisible: boolean;
+  private readonly _color: string | undefined;
+  private readonly _isInvisible: boolean | undefined;
 
   constructor(color?: string, isInvisible?: boolean) {
     this._color = color;
@@ -34,11 +34,11 @@ export class DirectoryProperties {
   }
 
   /** All possible colors can be found in terminal-container.component.css (.dynamic-bg-<color>). */
-  color(): string {
+  color(): string | undefined {
     return this._color;
   }
 
-  isInvisible(): boolean {
+  isInvisible(): boolean | undefined {
     return this._isInvisible;
   }
 }

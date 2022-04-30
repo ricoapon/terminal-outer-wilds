@@ -30,10 +30,10 @@ export class AssetReader {
     });
   }
 
-  get(key): string {
+  get(key: string): string {
     if (!this.downloadedAssets.has(key)) {
-      return undefined;
+      throw Error('Could not find asset ' + key)
     }
-    return this.downloadedAssets.get(key);
+    return this.downloadedAssets.get(key)!;
   }
 }

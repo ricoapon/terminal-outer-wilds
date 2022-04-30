@@ -1,5 +1,5 @@
-<span class="location">[{{ location }}] ></span>
+<span class="location">[{{ gameState.location }}] ></span>
 
 <input type="text" class="console-input"
        [(ngModel)]="input"
-       (keydown.enter)="parseCommand()" [autofocus]>
+       (keydown.enter)="parseCommand()" [autofocus]="true">

@@ -10,7 +10,7 @@ export type ParsedArgs = {
 /** Parses given arguments into ParsedArgs object. */
 export function parseCommandLineArguments(args: string): ParsedArgs {
   const splitArgs = args.split(' ');
-  const mainCommand = splitArgs.shift();
+  const mainCommand = splitArgs.shift()!;
   const flags: Set<string> = new Set<string>();
   for (const arg of splitArgs) {
     if (arg.startsWith('-')) {

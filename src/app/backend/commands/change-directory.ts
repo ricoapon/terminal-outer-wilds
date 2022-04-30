@@ -26,7 +26,7 @@ export class ChangeDirectory implements CommandParser {
     return {
       response: '',
       newCurrentDirectory: this.fileSystem.currentDirectory().name(),
-      newBackgroundColor: this.fileSystem.currentDirectoryProperties().color()
+      newBackgroundColor: this.fileSystem.currentDirectoryProperties()?.color()
     };
   }
 }

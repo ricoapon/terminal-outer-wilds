@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {VideoLine} from '../backend/types/command-types';
 
 export type Line = {
   location?: string,
@@ -8,11 +9,12 @@ export type Line = {
 
 @Injectable({providedIn: 'root'})
 export class GameState {
+  public location = 'tutorial';
   public backgroundColor = 'blue';
   public fullScreen = false;
   public fullScreenText = '';
   public showVideo = false;
-  public showVideoLines = [];
+  public showVideoLines: VideoLine[] = [];
 
   readonly lines: Line[] = [{
     response:

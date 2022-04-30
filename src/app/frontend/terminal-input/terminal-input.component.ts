@@ -9,7 +9,6 @@ import {GameState} from '../game-state';
   styleUrls: ['./terminal-input.component.css']
 })
 export class TerminalInputComponent implements OnInit {
-  location = '/tutorial';
   input: string;
 
   constructor(private readonly controller: Controller, public gameState: GameState) {
@@ -19,7 +18,7 @@ export class TerminalInputComponent implements OnInit {
   }
 
   parseCommand(): void {
-    const commandInput: InputCommand = {location: this.location, command: this.input};
+    const commandInput: InputCommand = {location: this.gameState.location, command: this.input};
     const commandResponse: CommandResponse = this.controller.parseCommand(commandInput);
     this.gameState.lines.push({location: commandInput.location, command: commandInput.command});
     if (!commandResponse.fullScreen && !commandResponse.videoLines) {
@@ -35,7 +34,7 @@ export class TerminalInputComponent implements OnInit {
     this.input = '';
 
     if (commandResponse.newCurrentDirectory) {
-      this.location = commandResponse.newCurrentDirectory;
+      this.gameState.location = commandResponse.newCurrentDirectory;
     }
 
     if (commandResponse.newBackgroundColor) {

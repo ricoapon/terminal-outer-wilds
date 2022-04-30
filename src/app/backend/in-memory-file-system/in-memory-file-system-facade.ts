@@ -22,7 +22,7 @@ export class InMemoryFileSystemFacade {
     return this.currentDirectoryManager.currentDirectory();
   }
 
-  public currentDirectoryWithoutSymbolicLinks(): AbsolutePath {
+  public currentDirectoryWithoutSymbolicLinks(): AbsolutePath | undefined {
     const result = this.inMemoryFileSystem.determineExistingPathWithoutSymbolicLinks(this.currentDirectoryManager.currentDirectory());
     if (result === undefined) {
       return undefined;
@@ -38,15 +38,15 @@ export class InMemoryFileSystemFacade {
     return this.currentDirectoryManager.changeCurrentDirectory(path);
   }
 
-  public currentDirectoryProperties(): DirectoryProperties {
+  public currentDirectoryProperties(): DirectoryProperties | undefined {
     return this.inMemoryFileSystem.getDirectoryProperties(this.currentDirectoryManager.currentDirectory());
   }
 
-  public listCurrentDirectoryNodes(): Set<FileSystemNode> {
+  public listCurrentDirectoryNodes(): Set<FileSystemNode> | undefined {
     return this.inMemoryFileSystem.listDirectoryNodes(this.currentDirectoryManager.currentDirectory());
   }
 
-  public getNode(path: string | Path): FileSystemNode {
+  public getNode(path: string | Path): FileSystemNode | undefined {
     return this.inMemoryFileSystem.getNode(this.currentDirectoryManager.determineAbsolutePathFromPath(path));
   }
 
@@ -60,7 +60,7 @@ export class InMemoryFileSystemFacade {
     return this.inMemoryFileSystem.moveFileOrProgram(absolutePathToFile, absolutePathToNewParentDirectory);
   }
 
-  public findPathOfNode(node: FileSystemNode): AbsolutePath {
+  public findPathOfNode(node: FileSystemNode): AbsolutePath | undefined {
     return this.inMemoryFileSystem.findPathOfNode(node);
   }
 }

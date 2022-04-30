@@ -7,7 +7,7 @@ import {AbsolutePath, Path} from './paths';
 export class CurrentDirectoryManager {
   private currentPath: AbsolutePath = AbsolutePath.root();
 
-  private readonly checkIfPathExists: (path: Path) => boolean;
+  private readonly checkIfPathExists: (path: AbsolutePath) => boolean;
 
   constructor(checkIfPathExists: (path: AbsolutePath) => boolean) {
     this.checkIfPathExists = checkIfPathExists;

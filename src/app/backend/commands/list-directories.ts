@@ -30,7 +30,7 @@ export class ListDirectories implements CommandParser {
   }
 
   public parseCommand(parsedArgs: ParsedArgs): CommandResponse {
-    const fileSystemNodes = this.fileSystem.listCurrentDirectoryNodes();
+    const fileSystemNodes = this.fileSystem.listCurrentDirectoryNodes()!;
 
     if (fileSystemNodes.size === 0) {
       return {response: 'This directory is empty'};

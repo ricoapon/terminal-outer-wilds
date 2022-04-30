@@ -1,6 +1,8 @@
 import {AbsolutePath} from './paths';
-import {Directory, InMemoryFile, ProgramFile, SymbolicLinkToDirectory} from './file-system-types';
+import {Directory, InMemoryFile, Program, ProgramFile, SymbolicLinkToDirectory} from './file-system-types';
 import {InMemoryFileSystemFacade} from './in-memory-file-system-facade';
+import {CommandResponse} from '../types/command-types';
+import {ParsedArgs} from '../util/command-line-argument-parser';
 
 describe('InMemoryFileSystemFacade', () => {
   it('happy flow', () => {
@@ -30,7 +32,7 @@ describe('InMemoryFileSystemFacade', () => {
 
     expect(fileSystem.changeCurrentDirectory('/dir1/dir3')).toEqual(true);
     const dir3content = fileSystem.listCurrentDirectoryNodes();
-    expect(dir3content.values().next().value.name()).toEqual('file1.txt');
+    expect(dir3content!.values().next().value.name()).toEqual('file1.txt');
 
     const fileThroughSymlink = fileSystem.getNode('/dir1/dir3/file1.txt') as InMemoryFile;
     const file = fileSystem.getNode('/dir2/file1.txt') as InMemoryFile;
@@ -47,11 +49,11 @@ describe('InMemoryFileSystemFacade', () => {
 
     expect(fileSystem.changeCurrentDirectory('/dir1/dir3')).toEqual(true);
     expect(fileSystem.currentDirectory().toString()).toEqual('/dir1/dir3');
-    expect(fileSystem.currentDirectoryWithoutSymbolicLinks().toString()).toEqual('/dir2');
+    expect(fileSystem.currentDirectoryWithoutSymbolicLinks()!.toString()).toEqual('/dir2');
 
     expect(fileSystem.changeCurrentDirectory('/dir1/dir3/dir4')).toEqual(true);
     expect(fileSystem.currentDirectory().toString()).toEqual('/dir1/dir3/dir4');
-    expect(fileSystem.currentDirectoryWithoutSymbolicLinks().toString()).toEqual('/dir2/dir4');
+    expect(fileSystem.currentDirectoryWithoutSymbolicLinks()!.toString()).toEqual('/dir2/dir4');
   });
 
   it('move() works', () => {
@@ -59,13 +61,19 @@ describe('InMemoryFileSystemFacade', () => {
     expect(fileSystem.createNode('/', new Directory('dir1'))).toEqual(true);
     expect(fileSystem.createNode('/', new Directory('dir2'))).toEqual(true);
     expect(fileSystem.createNode(('/dir2'), new InMemoryFile('file1.txt', 'Asset1')));
-    expect(fileSystem.createNode(('/dir2'), new ProgramFile('program1', undefined)));
+
+    class DummyProgram implements Program {
+      execute(parsedArgs: ParsedArgs): CommandResponse {
+        return {response: 'Dummy'};
+      }
+    }
+    expect(fileSystem.createNode(('/dir2'), new ProgramFile('program1', new DummyProgram())));
 
     expect(fileSystem.moveFile('/dir2/file1.txt', '/dir1'));
     expect(fileSystem.moveFile('/dir2/program1', '/dir1'));
-    expect(fileSystem.getNode('/dir1/file1.txt').name()).toEqual('file1.txt');
+    expect(fileSystem.getNode('/dir1/file1.txt')!.name()).toEqual('file1.txt');
     expect(fileSystem.getNode('/dir2/file1.txt')).toEqual(undefined);
-    expect(fileSystem.getNode('/dir1/program1').name()).toEqual('program1');
+    expect(fileSystem.getNode('/dir1/program1')!.name()).toEqual('program1');
     expect(fileSystem.getNode('/dir2/program1')).toEqual(undefined);
   });
 
@@ -75,6 +83,6 @@ describe('InMemoryFileSystemFacade', () => {
     expect(fileSystem.createNode('/', new Directory('dir1'))).toEqual(true);
     expect(fileSystem.createNode('/dir1', new Directory('dir2'))).toEqual(true);
     expect(fileSystem.createNode(('/dir1/dir2'), file1));
-    expect(fileSystem.findPathOfNode(file1).toString()).toEqual('/dir1/dir2/file1.txt');
+    expect(fileSystem.findPathOfNode(file1)!.toString()).toEqual('/dir1/dir2/file1.txt');
   });
 });

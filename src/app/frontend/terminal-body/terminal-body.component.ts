@@ -1,5 +1,5 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {ShortcutInput} from 'ng-keyboard-shortcuts';
+import {ShortcutInput} from '@egoistdeveloper/ng-keyboard-shortcuts';
 import {GameState} from '../game-state';
 
 @Component({

@@ -15,7 +15,7 @@ export class InMemoryFileSystem {
       new DirectoryProperties('blue', false)));
   }
 
-  private static determineNodeWithName(name: string, fileSystemNodes: Set<FileSystemNode>): FileSystemNode {
+  private static determineNodeWithName(name: string, fileSystemNodes: Set<FileSystemNode>): FileSystemNode | undefined {
     for (const fileSystemNode of fileSystemNodes) {
       if (fileSystemNode.name() === name) {
         return fileSystemNode;
@@ -25,7 +25,7 @@ export class InMemoryFileSystem {
   }
 
   /** Traverses the nodes and determines the path without symbolic links. If the path does not exist, return undefined. */
-  public determineExistingPathWithoutSymbolicLinks(absolutePath: AbsolutePath): AbsolutePath {
+  public determineExistingPathWithoutSymbolicLinks(absolutePath: AbsolutePath): AbsolutePath | undefined {
     // Anything without symlinks can be returned directly. Besides performance, this makes sure that root also returns the right value.
     if (this.fileSystemNodes.has(absolutePath.toString())) {
       return absolutePath;
@@ -59,7 +59,7 @@ export class InMemoryFileSystem {
     return traversedAbsolutePath;
   }
 
-  public getNode(absolutePath: AbsolutePath): FileSystemNode {
+  public getNode(absolutePath: AbsolutePath): FileSystemNode | undefined {
     const existingPathWithoutSymbolicLinks = this.determineExistingPathWithoutSymbolicLinks(absolutePath);
     if (existingPathWithoutSymbolicLinks === undefined) {
       return undefined;
@@ -68,7 +68,7 @@ export class InMemoryFileSystem {
     return this.fileSystemNodes.get(existingPathWithoutSymbolicLinks.toString());
   }
 
-  public listDirectoryNodes(absolutePath: AbsolutePath): Set<FileSystemNode> {
+  public listDirectoryNodes(absolutePath: AbsolutePath): Set<FileSystemNode> | undefined {
     let directory = this.getNode(absolutePath);
     if (directory instanceof SymbolicLinkToDirectory) {
       directory = this.getNode(directory.pointsTo());
@@ -76,7 +76,7 @@ export class InMemoryFileSystem {
     return (directory instanceof Directory) ? directory.nodesInsideDirectory() : undefined;
   }
 
-  public getDirectoryProperties(absolutePath: AbsolutePath): DirectoryProperties {
+  public getDirectoryProperties(absolutePath: AbsolutePath): DirectoryProperties | undefined {
     let directory = this.getNode(absolutePath);
     if (directory instanceof SymbolicLinkToDirectory) {
       directory = this.getNode(directory.pointsTo());
@@ -86,6 +86,9 @@ export class InMemoryFileSystem {
 
   public createNode(parentDirectoryAbsolutePath: AbsolutePath, newNode: FileSystemNode): boolean {
     const existingParentDirectoryPath = this.determineExistingPathWithoutSymbolicLinks(parentDirectoryAbsolutePath);
+    if (existingParentDirectoryPath === undefined) {
+      throw new Error('Parent path does not exist ' + parentDirectoryAbsolutePath)
+    }
     const parentDirectory = this.getNode(existingParentDirectoryPath);
     if (!(parentDirectory instanceof Directory)) {
       return false;
@@ -121,7 +124,7 @@ export class InMemoryFileSystem {
     return true;
   }
 
-  public findPathOfNode(nodeToFind: FileSystemNode): AbsolutePath {
+  public findPathOfNode(nodeToFind: FileSystemNode): AbsolutePath | undefined {
     for (const [path, node] of this.fileSystemNodes) {
       if (nodeToFind === node) {
         return AbsolutePath.root().resolve(path.substr(1));
