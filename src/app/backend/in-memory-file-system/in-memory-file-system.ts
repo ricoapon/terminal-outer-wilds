@@ -107,20 +107,26 @@ export class InMemoryFileSystem {
       return false;
     }
 
-    const oldParentDirectory = this.getNode(pathToFile.resolve('..'));
+    let oldParentDirectory = this.getNode(pathToFile.resolve('..'));
+    while (oldParentDirectory instanceof SymbolicLinkToDirectory) {
+      oldParentDirectory = this.getNode(oldParentDirectory.pointsTo());
+    }
     if (!(oldParentDirectory instanceof Directory)) {
       return false;
     }
 
-    const newParentDirectory = this.getNode(pathToNewParentDirectory);
+    let newParentDirectory = this.getNode(pathToNewParentDirectory);
+    while (newParentDirectory instanceof SymbolicLinkToDirectory) {
+      newParentDirectory = this.getNode(newParentDirectory.pointsTo());
+    }
     if (!(newParentDirectory instanceof Directory)) {
       return false;
     }
 
     oldParentDirectory.nodesInsideDirectory().delete(file);
     newParentDirectory.nodesInsideDirectory().add(file);
-    this.fileSystemNodes.delete(pathToFile.toString());
-    this.fileSystemNodes.set(pathToNewParentDirectory.resolve(file.name()).toString(), file);
+    this.fileSystemNodes.delete(this.findPathOfNode(file)!.toString());
+    this.fileSystemNodes.set(this.findPathOfNode(newParentDirectory)!.resolve(file.name()).toString(), file);
     return true;
   }
 

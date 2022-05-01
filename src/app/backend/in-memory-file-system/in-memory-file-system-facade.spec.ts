@@ -77,6 +77,30 @@ describe('InMemoryFileSystemFacade', () => {
     expect(fileSystem.getNode('/dir2/program1')).toEqual(undefined);
   });
 
+  it('move() works for symbolic links', () => {
+    const fileSystem = new InMemoryFileSystemFacade();
+    expect(fileSystem.createNode('/', new Directory('dir1'))).toEqual(true);
+    expect(fileSystem.createNode('/', new Directory('dir2'))).toEqual(true);
+    expect(fileSystem.createNode('/', new SymbolicLinkToDirectory('dir3', AbsolutePath.root().resolve('dir2')))).toEqual(true);
+    expect(fileSystem.createNode(('/dir1'), new InMemoryFile('file1.txt', 'Asset1')));
+
+    class DummyProgram implements Program {
+      execute(parsedArgs: ParsedArgs): CommandResponse {
+        return {response: 'Dummy'};
+      }
+    }
+    expect(fileSystem.createNode(('/dir1'), new ProgramFile('program1', new DummyProgram())));
+
+    expect(fileSystem.moveFile('/dir1/file1.txt', '/dir3')).toEqual(true);
+    expect(fileSystem.getNode('/dir2/file1.txt')!.name()).toEqual('file1.txt');
+    expect(fileSystem.getNode('/dir3/file1.txt')!.name()).toEqual('file1.txt');
+    expect(fileSystem.getNode('/dir1/file1.txt')).toEqual(undefined);
+
+    expect(fileSystem.moveFile('/dir1/program1', '/dir3')).toEqual(true);
+    expect(fileSystem.moveFile('/dir3/program1', '/dir1')).toEqual(true);
+    expect(fileSystem.getNode('/dir1/program1')!.name()).toEqual('program1');
+  });
+
   it('findPathOfNode() works', () => {
     const fileSystem = new InMemoryFileSystemFacade();
     const file1 = new InMemoryFile('file1.txt', 'Asset1');

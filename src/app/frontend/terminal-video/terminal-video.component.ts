@@ -13,7 +13,6 @@ export class TerminalVideoComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   ngOnInit(): void {
-    console.log('Initialize');
     this.visibleLines = [{
       response:
         ' __      __  _____   _____    ______    ____  \n' +
