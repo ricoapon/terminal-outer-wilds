@@ -1,0 +1,17 @@
+   ____    _    _   _______   ______   _____     __          __  _____   _        _____     _____
+  / __ \  | |  | | |__   __| |  ____| |  __ \    \ \        / / |_   _| | |      |  __ \   / ____|
+ | |  | | | |  | |    | |    | |__    | |__) |    \ \  /\  / /    | |   | |      | |  | | | (___
+ | |  | | | |  | |    | |    |  __|   |  _  /      \ \/  \/ /     | |   | |      | |  | |  \___ \
+ | |__| | | |__| |    | |    | |____  | | \ \       \  /\  /     _| |_  | |____  | |__| |  ____) |
+  \____/   \____/     |_|    |______| |_|  \_\       \/  \/     |_____| |______| |_____/  |_____/
+
+You made it, well done!
+
+The screen you are in now shows you the full context of the file. You cannot see your commands
+anymore. No problem, you can always press "Q" if you want to exit this screen. You will go back to
+where you can insert commands again. Try it! (Make sure to come back and read the rest of me, please?)
+
+It is time for your next command: `cd`. This is short for "Change directory". This way you can move
+around and find new files. If you used the `ls` command, you already saw there was a directory with
+the name "step-2". Let's try to go into that directory: `cd step-2`. The next file with instructions
+is located in that directory.
